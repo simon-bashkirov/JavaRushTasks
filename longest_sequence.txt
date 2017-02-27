@@ -1,0 +1,109 @@
+package com.javarush.task.task08.task0812;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+/* 
+Cамая длинная последовательность
+*/
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) list.add(Integer.parseInt(reader.readLine()));
+
+        HashMap<Integer, Integer> seq_map = new HashMap<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            int n = list.get(i);
+            if (seq_map.get(n) == null) seq_map.put(n, 1);
+            else seq_map.put(n, seq_map.get(n)+1);
+        }
+
+        int longest = 0;
+        for (HashMap.Entry<Integer, Integer> entry : seq_map.entrySet() ) {
+            int value = entry.getValue();
+            if (value > longest) longest = value;
+        }
+
+        System.out.println(longest);
+    }
+}
+
+package com.javarush.task.task08.task0812;
+
+import java.io.*;
+import java.util.ArrayList;
+
+/* 
+Cамая длинная последовательность
+*/
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<Integer> list = new ArrayList<>();
+        ArrayList<Integer> seqs = new ArrayList<>();
+        for (int i = 0; i < 10; i++) list.add(Integer.parseInt(reader.readLine()));
+
+        int current_int = list.get(0);
+        seqs.add(1);
+        for (int i = 1; i < list.size(); i++) {
+            int n = list.get(i);
+            if (n == current_int) {
+                seqs.set(seqs.size()-1,seqs.get(seqs.size()-1)+1);
+            }
+            else seqs.add(1);
+            current_int = n;
+        }
+
+        int longest = 0;
+        for (int i = 0; i < seqs.size(); i++) {
+            int n = seqs.get(i);
+            if (n > longest) longest = n;
+        }
+
+        System.out.println(longest);
+
+    }
+}
+
+
+
+
+
+package com.javarush.task.task08.task0812;
+
+import java.io.*;
+import java.util.ArrayList;
+
+/* 
+Cамая длинная последовательность
+*/
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) list.add(Integer.parseInt(reader.readLine()));
+
+        int longest_sequence = 1;
+        int length_of_sequence = 1;
+        //int current_int = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            int n = list.get(i);
+            int n_prev = list.get(i-1);
+            if (n == n_prev) {
+                length_of_sequence++;
+            }
+            else {
+                if (length_of_sequence > longest_sequence) longest_sequence = length_of_sequence;
+                length_of_sequence = 1;
+            }
+        }
+        if (length_of_sequence > longest_sequence) longest_sequence = length_of_sequence;
+
+        System.out.println(longest_sequence);
+
+    }
+}
