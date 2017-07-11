@@ -1,0 +1,38 @@
+/**
+ * Created by Vitaly on 5/8/2017.
+ */
+class Cat
+{
+    public static void print(int n)
+    {
+        System.out.println(n);
+        myName();
+    }
+    public static void print(short n)
+    {
+        System.out.println(n);
+        myName();
+    }
+    public static void print(Integer n)
+    {
+        System.out.println(n);
+        myName();
+    }
+    public static void print(String s)
+    {
+        System.out.println(s);
+        myName();
+    }
+    public static void main(String[] args)
+    {
+        Cat.print(1);
+        Cat.print((byte)1);
+        Cat.print("1");
+        //Cat.print(null);
+    }
+
+    public static void myName() {
+        StackTraceElement[] StackTraceElements = Thread.currentThread().getStackTrace();
+        System.out.println(StackTraceElements[2].getLineNumber());
+    }
+}
