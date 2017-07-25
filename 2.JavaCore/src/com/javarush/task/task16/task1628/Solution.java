@@ -11,7 +11,7 @@ public class Solution {
     public static volatile AtomicInteger countReadStrings = new AtomicInteger(0);
     public static volatile BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         //read count of strings
         int count = Integer.parseInt(reader.readLine());
 
@@ -27,6 +27,7 @@ public class Solution {
         while (count > countReadStrings.get()) {
         }
 
+
         consolReader1.interrupt();
         consolReader2.interrupt();
         consolReader3.interrupt();
@@ -34,8 +35,9 @@ public class Solution {
         System.out.println("#2:" + consolReader2);
         System.out.println("#3:" + consolReader3);
 
+        //Thread.sleep(500);
         reader.close();
-        System.out.println("reader closed");
+        //System.out.println("reader closed");
     }
 
     public static class ReaderThread extends Thread {
@@ -43,26 +45,22 @@ public class Solution {
 
         public void run() {
 
-            Thread current = Thread.currentThread();
-
             try {
-                while (true) {
-                    if (current.isInterrupted()) return;
-                    //Thread.sleep(50);
-                    String s = reader.readLine();
-                    result.add(s);
-                    countReadStrings.getAndIncrement();
-
+                while (!isInterrupted()) {
+                    //System.out.println(getName() + " is waiting for input");
+                    //String s = reader.readLine();
+                    //result.add(s);
+                    if (reader.ready()) {
+                        result.add(String.valueOf(reader.readLine()));
+                        countReadStrings.getAndIncrement();
+                    }
+                    //System.out.println(getName() + " received a value");
                 }
             }
-//            catch (InterruptedException e) {
-//                System.out.println(getName() + " interrupted");
-//            }
-
             catch (IOException e) {
-                System.out.println(getName() + " " + e);
+                //System.out.println(getName() + " " + e);
             }
-            System.out.println(getName() + " finished");
+            //System.out.println(getName() + " finished");
 
         }
 

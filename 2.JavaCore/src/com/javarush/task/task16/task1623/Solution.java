@@ -12,9 +12,30 @@ public class Solution {
         System.out.println(new GenerateThread());
     }
 
-    public static class GenerateThread {
+    public static class GenerateThread extends Thread {
         public GenerateThread() {
-            super();
+            super(String.valueOf(++countCreatedThreads));
+            start();
+        }
+
+        @Override
+        public String toString() {
+            return getName() + " created";
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                if (countCreatedThreads < Solution.count) {
+                    GenerateThread t = new GenerateThread();
+                    System.out.println(t);
+                    try {
+                        t.join();
+                    } catch (InterruptedException e) {
+                        System.out.println("Interrupted");
+                    }
+                } else return;
+            }
         }
     }
 }
