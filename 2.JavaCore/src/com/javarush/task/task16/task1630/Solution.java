@@ -3,8 +3,9 @@ package com.javarush.task.task16.task1630;
 import java.io.*;
 
 public class Solution {
-    public static String firstFileName;
-    public static String secondFileName;
+    private static String firstFileName;
+    private static String secondFileName;
+    //static final String solutionPath = "D:\\dev\\JavaRushTasks\\2.JavaCore\\src\\com\\javarush\\task\\task16\\task1630\\";
 
     static {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -13,7 +14,7 @@ public class Solution {
             secondFileName = reader.readLine();
             reader.close();
         } catch (IOException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -27,7 +28,7 @@ public class Solution {
         ReadFileInterface f = new ReadFileThread();
         f.setFileName(fileName);
         f.start();
-        //add your code here - добавьте код тут
+        f.join();
         System.out.println(f.getFileContent());
     }
 
@@ -49,14 +50,19 @@ public class Solution {
         @Override
         public void setFileName(String fullFileName) {
             this.fullFileName = fullFileName;
-            fileContent = "";
         }
 
         @Override
         public String getFileContent() {
+            return fileContent;
+        }
+
+        @Override
+        public void run() {
+            fileContent = "";
             try {
-                FileInputStream fileInputStream = new FileInputStream(fullFileName);
-                BufferedReader fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
+            FileInputStream fileInputStream = new FileInputStream(fullFileName);
+            BufferedReader fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
                 while (fileReader.ready()) {
                     String s = fileReader.readLine();
@@ -65,14 +71,8 @@ public class Solution {
 
                 fileReader.close();
             } catch (IOException e) {
-                System.err.println(e);
+                e.printStackTrace();
             }
-            return fileContent;
-        }
-
-        @Override
-        public void run() {
-            getFileContent();
         }
     }
 }
