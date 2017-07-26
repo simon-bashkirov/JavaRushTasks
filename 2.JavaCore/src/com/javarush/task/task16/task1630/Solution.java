@@ -1,6 +1,7 @@
 package com.javarush.task.task16.task1630;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Solution {
     private static String firstFileName;
@@ -16,7 +17,6 @@ public class Solution {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -46,6 +46,7 @@ public class Solution {
     public static class ReadFileThread extends Thread implements ReadFileInterface {
         private String fullFileName;
         private String fileContent;
+        private ArrayList<String> rowByRow = new ArrayList<String>();
 
         @Override
         public void setFileName(String fullFileName) {
@@ -54,19 +55,23 @@ public class Solution {
 
         @Override
         public String getFileContent() {
+            fileContent = "";
+            for (String row : rowByRow) {
+                fileContent += row;
+                fileContent += " ";
+            }
             return fileContent;
         }
 
         @Override
         public void run() {
-            fileContent = "";
             try {
-            FileInputStream fileInputStream = new FileInputStream(fullFileName);
-            BufferedReader fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                FileInputStream fileInputStream = new FileInputStream(fullFileName);
+                BufferedReader fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
                 while (fileReader.ready()) {
                     String s = fileReader.readLine();
-                    fileContent += (s + " ");
+                    rowByRow.add(s);
                 }
 
                 fileReader.close();
