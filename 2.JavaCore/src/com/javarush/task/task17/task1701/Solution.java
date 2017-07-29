@@ -30,4 +30,14 @@ public class Solution {
             }
         }
     }
+
+    public static class NoteThread extends Thread {
+        @Override
+        public void run() {
+            for (int index = 0; index <= 999; index++) {
+                Note.addNote(getName() + "-Note" + index);
+                Note.removeNote(getName());
+            }
+        }
+    }
 }
