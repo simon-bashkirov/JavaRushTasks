@@ -11,34 +11,43 @@ import java.util.List;
 public class Solution {
     public static List<String> allLines = new ArrayList<String>();
     public static List<String> forRemoveLines = new ArrayList<String>();
-    static FileInputStream fileInputStream;
 
     public static void main(String[] args) throws IOException, FileNotFoundException {
+
+        Solution solution = new Solution();
+
+        FileInputStream fileInputStream;
+        BufferedReader fileReader;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String file1 = reader.readLine();
         String file2 = reader.readLine();
-        readFromFileToList(file1, allLines);
-        readFromFileToList(file2, forRemoveLines);
-        joinData();
+        reader.close();
 
-    }
+        fileInputStream = new FileInputStream(file1);
+        fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
+        while (fileReader.ready()) allLines.add(fileReader.readLine());
 
-    public static void joinData () throws CorruptedDataException {
-        boolean ifContains = true;
-        for (String listString : forRemoveLines) {
-            if (!allLines.contains(listString)) ifContains = false;
-        }
+        fileInputStream = new FileInputStream(file2);
+        fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
+        while (fileReader.ready()) forRemoveLines.add(fileReader.readLine());
 
-    }
-
-    public static void readFromFileToList(String fileName, List<String> list) throws FileNotFoundException, IOException {
-        fileInputStream = new FileInputStream(fileName);
-        BufferedReader fileReader = new BufferedReader(new InputStreamReader(fileInputStream));
-        while (fileReader.ready()) {
-            String s = fileReader.readLine();
-            list.add(s);
-        }
         fileReader.close();
         fileInputStream.close();
+
+        solution.joinData();
+
+        System.out.println(allLines);
+        System.out.println(forRemoveLines);
+
     }
+
+    public void joinData () throws CorruptedDataException {
+        if (allLines.containsAll(forRemoveLines)) allLines.removeAll(forRemoveLines);
+        else {
+            allLines.clear();
+            throw new CorruptedDataException();
+        }
+
+    }
+
 }
