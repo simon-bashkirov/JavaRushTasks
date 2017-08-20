@@ -28,7 +28,10 @@ public class Solution {
             else bytesCount.put(data, bytesCount.get(data)+1);
         }
 
-        minRepeatCount = bytesCount.entrySet().iterator().next().getValue();
+        minRepeatCount = bytesCount.size();
+
+        fileInputStream.close();
+        reader.close();
 
         for (HashMap.Entry<Integer, Integer> entry : bytesCount.entrySet()) {
             int key = entry.getKey();
@@ -45,8 +48,6 @@ public class Solution {
         }
         System.out.println();
 
-        fileInputStream.close();
-        reader.close();
 
     }
 }
