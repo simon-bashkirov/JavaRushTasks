@@ -1,4 +1,4 @@
-package com.javarush.task.task17.task1710;
+package com.javarush.task.task17.task1711;
 
 import java.util.Date;
 
@@ -43,9 +43,5 @@ public class Person {
 
     public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
-    }
-
-    public String toString() {
-        return "<" + this.name + ", " + this.sex + ", " + this.birthDay + ">";
     }
 }
