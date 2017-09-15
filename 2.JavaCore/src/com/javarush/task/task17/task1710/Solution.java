@@ -25,7 +25,7 @@ public class Solution {
         HashMap<Enum, String> sexes = new HashMap<>();
         sexes.put(Sex.MALE, "м");
         sexes.put(Sex.FEMALE, "ж");
-        DateFormat df = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         //df.setTimeZone(TimeZone.getTimeZone("Europe/Athens"));
 
         //System.out.println("before " + allPeople);
