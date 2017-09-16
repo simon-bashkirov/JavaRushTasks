@@ -11,49 +11,35 @@ import java.io.InputStreamReader;
 
 public class Solution {
     public static String word = "world";
+    public static int countOfWord = 0;
 
     public static void main(String[] args) throws IOException {
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-//        String fileName = reader.readLine();
-//        reader.close();
-        String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task1907.txt";
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String fileName = reader.readLine();
+        reader.close();
+//        String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task1907.txt";
 
 
 
         FileReader fileReader = new FileReader(fileName);
 
+        String currentWord = "";
         while (fileReader.ready()) {
             int data = fileReader.read();
-            //System.out.println("int: " + data + ",(char): " + (char)data );
-            System.out.print((char)data + " ");
+            char ch = (char)data;
+            if (Character.isLetter(ch)) {
+                currentWord += ch;
+            } else {
+                if (currentWord.equals(word)) countOfWord++;
+                currentWord = "";
+            }
 
         }
 
         fileReader.close();
 
-//        char c = 'a';
-//        char.isLetter()
-//        String word = "world";
-//        word.toCharArray();
+        System.out.println(countOfWord);
 
     }
 
-    public static class CharArray {
-        char[] charArray;
-
-        public CharArray() {
-            this.charArray = new char[1];
-        }
-
-        public void add(char ch) {
-            charArray[charArray.length-1] = ch;
-            char[] tmpCharAray = new char[charArray.length+1];
-            for (int i = 0; i < charArray.length; i++) tmpCharAray[i] = charArray[i];
-            charArray = tmpCharAray;
-        }
-
-        public char[] getCharArray() {
-            return charArray;
-        }
-    }
 }
