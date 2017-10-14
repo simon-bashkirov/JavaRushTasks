@@ -1,4 +1,4 @@
-package com.javarush.task.task20.task2001;
+package com.javarush.task.task20.task2005;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,32 +6,32 @@ import java.util.Arrays;
 import java.util.List;
 
 /* 
-Читаем и пишем в файл: Human
+Очень странные дела
 */
+
 public class Solution {
     public static void main(String[] args) {
-        //исправьте outputStream/inputStream в соответствии с путем к вашему реальному файлу
+        //исправь outputStream/inputStream в соответствии с путем к твоему реальному файлу
         try {
-
-//            File your_file_name = File.createTempFile("1.txt", null);
-            File your_file_name = new File("D:\\dev\\JavaRushTasks\\source_files\\task2001\\1.txt");
+//            File your_file_name = File.createTempFile("your_file_name", null);
+            String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task2005\\1.txt";
+            File your_file_name = new File(fileName);
             OutputStream outputStream = new FileOutputStream(your_file_name);
             InputStream inputStream = new FileInputStream(your_file_name);
 
             Human ivanov = new Human("Ivanov", new Asset("home"), new Asset("car"));
-//            Human ivanov = new Human("Ivanov");
+            ivanov.setAssetPrice("car", 2500.0);
             ivanov.save(outputStream);
             outputStream.flush();
-            outputStream.close();
 
             Human somePerson = new Human();
             somePerson.load(inputStream);
+            //check here that ivanov equals to somePerson - проверьте тут, что ivanov и somePerson равны
+            System.out.println("ivanov: " + ivanov);
+            System.out.println("somePerson: " + somePerson);
             if (ivanov.equals(somePerson)) System.out.println("class was loaded correctly");
             else System.out.println("class was NOT loaded correctly");
             inputStream.close();
-
-            System.out.println(ivanov);
-            System.out.println(somePerson);
 
         } catch (IOException e) {
             //e.printStackTrace();
@@ -42,18 +42,9 @@ public class Solution {
         }
     }
 
-/*    public static void main(String[] args) {
-        Human ivanov = new Human("Ivanov", new Asset("home"), new Asset("car"));
-        System.out.println(ivanov.hashCode());
-    }*/
-
-
     public static class Human {
         public String name;
         public List<Asset> assets = new ArrayList<>();
-
-        public Human() {
-        }
 
         @Override
         public boolean equals(Object o) {
@@ -71,7 +62,10 @@ public class Solution {
         public int hashCode() {
             int result = name != null ? name.hashCode() : 0;
             result = 31 * result + (assets != null ? assets.hashCode() : 0);
-            return result;
+            return result; /*return (int) (Math.random() * 100);*/
+        }
+
+        public Human() {
         }
 
         public Human(String name, Asset... assets) {
@@ -82,6 +76,14 @@ public class Solution {
         }
 
         public void save(OutputStream outputStream) throws Exception {
+            //implement this method - реализуйте этот метод
+            /*PrintWriter printWriter = new PrintWriter(outputStream);
+            printWriter.println(this.name);
+            if (this.assets.size() > 0) {
+                for (Asset current : this.assets)
+                    printWriter.println(current.getName());
+            }
+            printWriter.close();*/
             PrintWriter printWriter = new PrintWriter(outputStream);
             if (this.assets.size() > 0) {
                 for (Asset a : this.assets) {
@@ -93,6 +95,14 @@ public class Solution {
         }
 
         public void load(InputStream inputStream) throws Exception {
+            //implement this method - реализуйте этот метод
+            /*BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            this.name = reader.readLine();
+            String assetName;
+            while ((assetName = reader.readLine()) != null)
+                this.assets.add(new Asset(assetName));
+            reader.close();*/
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String human_name = null;
             while (bufferedReader.ready()) {
@@ -112,11 +122,19 @@ public class Solution {
             bufferedReader.close();
         }
 
+        public void setAssetPrice(String assetName, double assetPrice) {
+            for (Asset a : assets) {
+                if (a.getName().equals(assetName)) {
+                    a.setPrice(assetPrice);
+                }
+            }
+        }
+
         @Override
         public String toString() {
             String toString = "Human's name:" + this.name;
-            for (Asset a : this.assets) {
-                toString += ". asset name: " + a.getName() + ", asset price: " + a.getPrice();
+            for (Asset a : assets) {
+                toString += ". Asset name: " + a.getName() + ", asset price: " + a.getPrice();
             }
             return toString;
         }

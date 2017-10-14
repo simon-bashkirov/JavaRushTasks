@@ -1,0 +1,4 @@
+#Thu Oct 12 11:14:22 EEST 2017
+staticString=it's test static string
+j=4
+i=3
