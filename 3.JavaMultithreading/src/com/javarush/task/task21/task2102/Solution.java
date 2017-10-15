@@ -9,7 +9,7 @@ import java.lang.reflect.Modifier;
 public class Solution {
     public static void main(String[] args) {
         int modifiersOfThisClass = Solution.class.getModifiers();
-//        System.out.println()
+//        System.out.println(modifiersOfThisClass);
         System.out.println(isAllModifiersContainSpecificModifier(modifiersOfThisClass, Modifier.PUBLIC));   //true
         System.out.println(isAllModifiersContainSpecificModifier(modifiersOfThisClass, Modifier.STATIC));   //false
 
@@ -18,7 +18,13 @@ public class Solution {
     }
 
     public static boolean isAllModifiersContainSpecificModifier(int allModifiers, int specificModifier) {
-        return false;
+        boolean is = false;
+        if (specificModifier == Modifier.PUBLIC) {
+            if (Modifier.isPublic(allModifiers)) is = true;
+        } else if (specificModifier == Modifier.STATIC) {
+            if (Modifier.isStatic(allModifiers)) is = true;
+        }
+        return is;
     }
 
     private static Method getMainMethod() {
