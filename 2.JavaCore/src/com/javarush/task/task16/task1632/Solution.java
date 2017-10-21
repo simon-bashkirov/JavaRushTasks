@@ -18,9 +18,17 @@ public class Solution {
     }
 
     public static void main(String[] args) {
+        for (Thread t : threads) {
+            t.start();
+        }
     }
 
     public static class Thread1 extends Thread {
+        public Thread1() {
+            super();
+            super.setName(this.getClass().getSimpleName());
+        }
+
         @Override
         public void run() {
             while (true) {
@@ -30,6 +38,11 @@ public class Solution {
     }
 
     public static class Thread2 extends Thread {
+        public Thread2() {
+            super();
+            super.setName(this.getClass().getSimpleName());
+        }
+
         @Override
         public void run() {
             try {
@@ -41,6 +54,11 @@ public class Solution {
     }
 
     public static class Thread3 extends Thread {
+        public Thread3() {
+            super();
+            super.setName(this.getClass().getSimpleName());
+        }
+
         @Override
         public void run() {
             while (true) {
@@ -56,6 +74,10 @@ public class Solution {
     }
 
     public static class Thread4 extends Thread implements Message {
+        public Thread4() {super();
+            super.setName(this.getClass().getSimpleName());
+        }
+
         @Override
         public void run() {
             showWarning();
@@ -68,6 +90,11 @@ public class Solution {
     }
 
     public static class Thread5 extends Thread {
+        public Thread5() {
+            super();
+            super.setName(this.getClass().getSimpleName());
+        }
+
         @Override
         public void run() {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -75,13 +102,20 @@ public class Solution {
             try {
                 while (true) {
                     String s = reader.readLine();
-                    if (s.equals("N")) return;
-                    else inputSum += Integer.parseInt(s);
+//                    System.out.println("STRING IS: \"" + s + "\"");
+                    try {
+                        inputSum += Integer.parseInt(s);
+                    } catch (NumberFormatException e) {
+                        if (s.equals("N")) {
+                            System.out.println(inputSum);
+                            break;
+                        }
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(inputSum);
+//            System.out.println(getName() + " died");
         }
     }
 }
