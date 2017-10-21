@@ -25,16 +25,9 @@ public class Solution {
 
         @Override
         public void run() {
-            while (true) {
-                if (countCreatedThreads < Solution.count) {
-                    GenerateThread t = new GenerateThread();
-                    System.out.println(t);
-                    try {
-                        t.join();
-                    } catch (InterruptedException e) {
-                        System.out.println("Interrupted");
-                    }
-                } else return;
+            if (countCreatedThreads < Solution.count) {
+                GenerateThread t = new GenerateThread();
+                System.out.println(t + " from " + Thread.currentThread().getName());
             }
         }
     }
