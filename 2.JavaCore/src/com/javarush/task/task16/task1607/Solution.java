@@ -24,11 +24,11 @@ public class Solution {
             if (!horse.isFinished()) {
                 System.out.println("Waiting for " + horse.getName());
                 horse.join();
-
+//                countFinished++;
             }
-            countFinished++;
+            else countFinished++;
         }
-
+//        System.out.println("countFinished: " + countFinished);
         return countFinished;
     }
 
@@ -62,6 +62,9 @@ public class Solution {
             String s = "";
             for (int i = 0; i < 1001; i++) {   //delay
                 s += "" + i;
+                try {
+                    Thread.sleep(3);
+                } catch (InterruptedException e) { e.printStackTrace(); }
                 if (i == 1000) {
                     s = " has finished the race!";
                     System.out.println(getName() + s);
