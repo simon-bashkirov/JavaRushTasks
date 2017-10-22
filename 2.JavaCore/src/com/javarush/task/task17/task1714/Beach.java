@@ -17,12 +17,7 @@ public class Beach implements Comparable<Beach> {
 
     @Override
     public synchronized int compareTo(Beach o) {
-        int qualityCompare = Integer.compare(this.quality,o.quality);
-        if (qualityCompare != 0) {
-            return qualityCompare;
-        } else {
-            return Float.compare(this.distance,o.distance);
-        }
+        return Integer.compare(this.quality,o.quality) - Float.compare(this.distance, o.distance);
     }
 
     public synchronized String getName() {
@@ -50,6 +45,8 @@ public class Beach implements Comparable<Beach> {
     }
 
     public static void main(String[] args) {
-
+        Beach beach1 = new Beach("Beach1", 3.5f, 4);
+        Beach beach2 = new Beach("Beach2", 1.3f, 5);
+        System.out.println(beach2.compareTo(beach1));
     }
 }
