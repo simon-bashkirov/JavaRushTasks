@@ -9,9 +9,12 @@ public class Solution {
     }
 
     public static String getPartOfString(String string) {
-        return null;
+        if (string == null) throw new TooShortStringException();
+        String[] words = string.split(" ");
+        if ((words.length-1) < 4) throw new TooShortStringException();
+        return words[1] + " " + words[2] + " " + words[3] + " " + words[4];
     }
 
-    public static class TooShortStringException {
+    public static class TooShortStringException extends RuntimeException {
     }
 }

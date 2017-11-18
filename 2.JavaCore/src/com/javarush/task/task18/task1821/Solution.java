@@ -12,8 +12,8 @@ import java.util.HashMap;
 
 public class Solution {
     public static void main(String[] args) throws IOException {
-        //args = new String[2];
-        //args[0] = "d:\\1.txt";
+//        args = new String[2];
+//        args[0] = "D:\\dev\\JavaRushTasks\\source_files\\task1821\\1.txt";
         String inFile = args[0];
         HashMap<Integer, Integer> symbolCount = new HashMap<Integer, Integer>();
 
@@ -21,10 +21,8 @@ public class Solution {
 
         while (fileInputStream.available() > 0) {
             int data = fileInputStream.read();
-            if (!(data == 10 || data == 13)) {
-                if (!symbolCount.containsKey(data)) symbolCount.put(data, 1);
-                else symbolCount.put(data, symbolCount.get(data) + 1);
-            }
+            if (!symbolCount.containsKey(data)) symbolCount.put(data, 1);
+            else symbolCount.put(data, symbolCount.get(data) + 1);
         }
 
         fileInputStream.close();

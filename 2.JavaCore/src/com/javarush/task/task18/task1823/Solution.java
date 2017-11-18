@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /* 
@@ -26,9 +27,9 @@ public class Solution {
         }
 
         reader.close();
-/*        for (String fileName : resultMap.keySet()) {
-            System.out.println(fileName + ": " + resultMap.get(fileName));
-        }*/
+        for (String fileName : resultMap.keySet()) {
+            System.out.println(fileName + ": " + (char)(int)resultMap.get(fileName));
+        }
 
     }
 
@@ -40,15 +41,26 @@ public class Solution {
 
         @Override
         public void run() {
+            HashMap<Integer, Integer> byteCount = new LinkedHashMap<>();
             try {
                 FileInputStream fileInputStream = new FileInputStream(fileName);
-                int maxByte = 0;
                 while (fileInputStream.available() > 0) {
                     int data = fileInputStream.read();
-                    if (data > maxByte) maxByte = data;
+                    if (!byteCount.containsKey(data)) byteCount.put(data, 1);
+                    else byteCount.put(data, byteCount.get(data) + 1);
+                }
+                int mostMetByte=0;
+                int count=0;
+                for (Map.Entry<Integer,Integer> pair : byteCount.entrySet()) {
+                    int key = pair.getKey();
+                    int value=pair.getValue();
+                    if (value>count) {
+                        mostMetByte=key;
+                        count=value;
+                    }
                 }
                 synchronized (this) {
-                    resultMap.put(fileName, maxByte);
+                    resultMap.put(fileName, mostMetByte);
                 }
                 fileInputStream.close();
             } catch (IOException e) {

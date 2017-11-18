@@ -44,4 +44,8 @@ public class Person {
     public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
+
+    public String toString() {
+        return "<" + this.name + ", " + this.sex + ", " + this.birthDay + ">";
+    }
 }
