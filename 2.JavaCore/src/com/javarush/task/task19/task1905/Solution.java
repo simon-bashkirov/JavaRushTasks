@@ -17,12 +17,12 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-//        DataAdapter dataAdapter = new DataAdapter(new ACustomer(), new AContact());
-//        System.out.println("getCompany: " + dataAdapter.getCompany());
-//        System.out.println("getContactFirstName: " + dataAdapter.getContactFirstName());
-//        System.out.println("getContactLastName: " + dataAdapter.getContactLastName());
-//        System.out.println("getCountryCode: " + dataAdapter.getCountryCode());
-//        System.out.println("getDialString: " + dataAdapter.getDialString());
+        DataAdapter dataAdapter = new DataAdapter(new ACustomer(), new AContact());
+        System.out.println("getCountryCode: " + dataAdapter.getCountryCode());
+        System.out.println("getCompany: " + dataAdapter.getCompany());
+        System.out.println("getContactFirstName: " + dataAdapter.getContactFirstName());
+        System.out.println("getContactLastName: " + dataAdapter.getContactLastName());
+        System.out.println("getDialString: " + dataAdapter.getDialString());
     }
 
     public static class DataAdapter implements RowItem {
@@ -60,8 +60,7 @@ public class Solution {
         @Override
         public String getDialString() {
             String phoneNumber = contact.getPhoneNumber();
-            return "callto://" + phoneNumber.substring(0,3) + phoneNumber.substring(4,7) + phoneNumber.substring(8,11) +
-                    phoneNumber.substring(12,14) + phoneNumber.substring(15,17);
+            return "callto://" + "+" + phoneNumber.replaceAll("[^0-9]","");
         }
     }
 

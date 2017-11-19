@@ -45,8 +45,9 @@ public class Solution {
         @Override
         public String getPhoneNumber() {
             String phoneNumber = Integer.toString(data.getPhoneNumber());
-            if (phoneNumber.length() < 10) {
-                for (int i = 0; i < (10-phoneNumber.length()); i++) {
+            int numberLength = phoneNumber.length();
+            if (numberLength < 10) {
+                for (int i = 0; i < (10-numberLength); i++) {
                     phoneNumber = "0" + phoneNumber;
                 }
             }

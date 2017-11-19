@@ -11,25 +11,17 @@ import java.util.Properties;
 public class Solution {
     public static Map<String, String> properties = new HashMap<>();
 
-    public static void fillInPropertiesMap() throws Exception {
+    public void fillInPropertiesMap() throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         String fileName = bufferedReader.readLine();
-//        String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task2003\\1.txt";
         bufferedReader.close();
 
         FileInputStream fileInputStream = new FileInputStream(fileName);
         load(fileInputStream);
         fileInputStream.close();
-
     }
 
-    public static void save(OutputStream outputStream) throws Exception {
-        /*BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
-        for (String s : properties.keySet()) {
-            bufferedWriter.write(s + " = " + properties.get(s));
-            bufferedWriter.newLine();
-        }
-        bufferedWriter.close();*/
+    public void save(OutputStream outputStream) throws Exception {
         Properties prop = new Properties();
         for (HashMap.Entry<String, String> e : properties.entrySet()) {
             prop.setProperty(e.getKey(), e.getValue());
@@ -37,7 +29,7 @@ public class Solution {
         prop.store(outputStream, null);
     }
 
-    public static void load(InputStream inputStream) throws Exception {
+    public void load(InputStream inputStream) throws Exception {
         Properties prop = new Properties();
         prop.load(inputStream);
 
@@ -49,7 +41,7 @@ public class Solution {
     public static void main(String[] args) throws Exception {
 //        fillInPropertiesMap();
 //        System.out.println(properties);
-//        String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task2003\\2.txt";
+//        String fileName = "D:\\IdeaProjects\\JavaRushTasks\\source_files\\task2003\\2.txt";
 //        save(new FileOutputStream(fileName));
     }
 }

@@ -4,9 +4,8 @@ package com.javarush.task.task18.task1827;
 Прайсы
 */
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.io.*;
+import java.util.Arrays;
 
 public class Solution {
     public static final byte[] NEWLINE = {13, 10};
@@ -15,32 +14,28 @@ public class Solution {
     public static void main(String[] args) throws Exception {
 //        args = new String[4];
 //        args[0] = "-c"; args[1] = "Шорты пляжные синие в красную полоску"; args[2] = "159.00"; args[3] = "12";
-        //args[0] = "-c"; args[1] = "beach shorts blue"; args[2] = "173.00"; args[3] = "17";
+//        args[0] = "-c"; args[1] = "beach shorts blue"; args[2] = "173.00"; args[3] = "17";
 
         if (args[0].equals("-c")) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            fileName = reader.readLine();
+//            fileName = reader.readLine();
+            fileName = "D:\\IdeaProjects\\JavaRushTasks\\source_files\\task1827\\data.txt";
             reader.close();
-//            fileName = "D:\\IdeaProjects\\JavaRushTasks\\source_files\\task1827\\data.txt";
+
             String[] fields = appendSpacesToFields(argsToFields(args));
             addEntry(fields);
-            //printArgs(fields);
         }
 
     }
 
     public static void addEntry(String[] args) throws IOException {
-        //appendSpacesToArgs(args);
-        //printArgs(data);
         FileOutputStream fileOutputStream = new FileOutputStream(fileName, true);
 
-
-        fileOutputStream.write(NEWLINE);
         for (String value : args) {
             byte[] buffer = value.getBytes();
             fileOutputStream.write(buffer);
         }
-
+        fileOutputStream.write(NEWLINE);
         fileOutputStream.close();
     }
     
@@ -53,7 +48,6 @@ public class Solution {
         }
         String price = args[args.length - 2];
         String quantity = args[args.length - 1];
-        //System.out.println(id + " " + productName + " " + price + " " + quantity);
         return new String[]{id, productName, price, quantity};
     }
 
@@ -92,6 +86,7 @@ public class Solution {
         return maxId+1;
     }
 
+    //Debug
     public static void printRowValues(String row) {
         String id = row.substring(0,8);
         String productName = row.substring(8,38);
@@ -100,14 +95,8 @@ public class Solution {
         System.out.println("Printing row values: " + id + productName + price + quantity);
     }
 
+    //Debug
     public static void printArgs(String[] args) {
-        System.out.print("[");
-        int i = 0;
-        for (String s : args) {
-            i++;
-            System.out.print(s);
-            if (i != args.length) System.out.print(", ");
-        }
-        System.out.println("]");
+        System.out.println(Arrays.toString(args));
     }
 }

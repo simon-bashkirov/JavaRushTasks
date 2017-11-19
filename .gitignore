@@ -25,3 +25,4 @@ hs_err_pid*
 
 JavaRushPlugin.properties*
 .idea/workspace.xml*
+/patch.diff
