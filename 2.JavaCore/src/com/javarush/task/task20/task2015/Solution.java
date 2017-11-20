@@ -17,7 +17,7 @@ public class Solution implements Serializable, Runnable {
     }
 
     public void run() {
-        while (i < 30) {
+        while (i < 15) {
             System.out.println(Thread.currentThread().getName() + ", i = " + i);
             try {
                 Thread.sleep(1000/speed);
@@ -53,22 +53,22 @@ public class Solution implements Serializable, Runnable {
     public static void main(String[] args) throws Exception {
         Solution solution = new Solution(2);
 
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         FileOutputStream fileOutputStream = new FileOutputStream("D:\\dev\\JavaRushTasks\\source_files\\task2015\\1.txt");
         ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
-        solution.writeObject(oos);
-//        oos.writeObject(solution);
+//        solution.writeObject(oos);
+        oos.writeObject(solution);
         oos.close();
         fileOutputStream.close();
 
 //        solution.runner.interrupt();
         solution.runner.interrupt();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         FileInputStream fileInputStream = new FileInputStream("D:\\dev\\JavaRushTasks\\source_files\\task2015\\1.txt");
         ObjectInputStream ois = new ObjectInputStream(fileInputStream);
-        Solution loadedSolution = (Solution) new Object();
-        loadedSolution.readObject(ois);
-//        Solution loadedSolution = (Solution)ois.readObject();
+//        Solution loadedSolution = (Solution) new Object();
+//        loadedSolution.readObject(ois);
+        Solution loadedSolution = (Solution)ois.readObject();
         ois.close();
         fileInputStream.close();
 
