@@ -5,28 +5,36 @@ import java.io.*;
 /*
 Найти ошибки
 */
-public class Solution {
-    public static class A {
+public class Solution implements Serializable {
+    public static class A{
         protected String name = "A";
 
+        public A() {
+            this.name += "+A()";
+        }
         public A(String name) {
             this.name += name;
         }
+
     }
 
     public class B extends A implements Serializable{
+
         public B(String name) {
             super(name);
             this.name += name;
         }
 
-        public void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(ObjectOutputStream out) throws IOException {
+//            System.out.println("B - writing");
             out.defaultWriteObject();
             out.writeObject(name);
         }
 
-        public void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+//            System.out.println("B - reading");
             in.defaultReadObject();
+            name=(String)in.readObject();
         }
     }
 
@@ -37,14 +45,22 @@ public class Solution {
         Solution solution = new Solution();
         B b = solution.new B("B2");
         System.out.println(b.name);
+//        System.out.println("b.name\t= " + b.name);
 
-        b.writeObject(oos);
+        oos.writeObject(b);
+//        System.out.println(arrayOutputStream.toString());
 
         ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(arrayOutputStream.toByteArray());
+//        byte[] buffer = new byte[arrayInputStream.available()];
+//        System.out.println(arrayInputStream.read(buffer));
+//        System.out.println(buffer);
         ObjectInputStream ois = new ObjectInputStream(arrayInputStream);
 
-        B b1 = (B)new Object();
-        b1.readObject(ois);
+
+
+        B b1 = (B)ois.readObject();
         System.out.println(b1.name);
+
+//        System.out.println("b1.name\t= " + b1.name);
     }
 }

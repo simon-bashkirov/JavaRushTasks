@@ -1,0 +1,1 @@
+-Dsun.io.serialization.extendedDebugInfo=true
