@@ -4,6 +4,7 @@ import com.javarush.task.task23.task2309.vo.*;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractDbSelectExecutor<T extends NamedItem> {
@@ -39,7 +40,21 @@ public abstract class AbstractDbSelectExecutor<T extends NamedItem> {
     //reflection
     //you have to know that it is possible to create new instance of T (generic type) class by using its default constructor
     private T getNewInstanceOfGenericType() throws InstantiationException, IllegalAccessException {
-        return (T) ((Class) ((ParameterizedType) this.getClass().
-                getGenericSuperclass()).getActualTypeArguments()[0]).newInstance();
+        /* DEBUG
+        System.out.println("this.getClass().getGenericSuperclass() = \r\n\t" + this.getClass().getGenericSuperclass());
+        System.out.println("(ParameterizedType) this.getClass().getGenericSuperclass() = \r\n\t" +
+                (ParameterizedType) this.getClass().getGenericSuperclass());
+        System.out.println("((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments() = \r\n\t" +
+                ((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments());
+        System.out.println("((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[0] = \r\n\t" +
+                ((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+        System.out.println("(Class)((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[0] = \r\n\t" +
+                (Class)((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]);*/
+        return (T) (
+                (Class)
+                (
+                        (ParameterizedType) this.getClass().getGenericSuperclass()
+                ).getActualTypeArguments()[0]
+        ).newInstance();
     }
 }
