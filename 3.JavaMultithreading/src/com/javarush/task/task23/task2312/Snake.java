@@ -1,6 +1,6 @@
 package com.javarush.task.task23.task2312;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Snake {
@@ -9,7 +9,7 @@ public class Snake {
     private SnakeDirection direction;
 
     public Snake(int x, int y) {
-        sections = new ArrayList<>();
+        sections = new LinkedList<>();
         sections.add(new SnakeSection(x,y));
         isAlive = true;
     }
@@ -40,17 +40,30 @@ public class Snake {
 
     public void move() {
         if (isAlive) {
-
-            switch (direction) {
-                case UP: move(0,-1); break;
-                case RIGHT: move(1,0); break;
-                case DOWN: move(0, 1); break;
-                case LEFT: move(-1,0); break;
-            }
+            if (direction==SnakeDirection.UP) move(0,-1);
+            else if (direction==SnakeDirection.RIGHT) move(1,0);
+            else if (direction==SnakeDirection.DOWN) move(0, 1);
+            else if (direction==SnakeDirection.LEFT) move(-1,0);
         }
     }
 
     public void move(int x, int y) {
+        SnakeSection newSection = new SnakeSection(sections.get(0).getX()+x,sections.get(0).getY()+y);
+        checkBody(newSection);
+        checkBorders(newSection);
+        if (isAlive) {
+            sections.add(0,newSection);
+            if (newSection.getX() == Room.game.getMouse().getX() && newSection.getY() == Room.game.getMouse().getY()) {
+                Room.game.eatMouse();
+            } else sections.remove(sections.size()-1);
+        }
+    }
 
+    public void checkBorders(SnakeSection head) {
+        if (head.getX() < 0 || head.getX() >= Room.game.getWidth() || head.getY() < 0 || head.getY() >= Room.game.getHeight()) isAlive = false;
+    }
+
+    public void checkBody(SnakeSection head) {
+        if (sections.contains(head)) isAlive = false;
     }
 }
