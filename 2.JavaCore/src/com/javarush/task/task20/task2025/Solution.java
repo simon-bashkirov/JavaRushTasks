@@ -21,7 +21,7 @@ public class Solution {
 
 
         for (long l = 0; l < N; l++) {
-            digits.set(numberOfDigits-1,)
+            digits.set(numberOfDigits-1,0); //fix this
         }
 
         return result;
