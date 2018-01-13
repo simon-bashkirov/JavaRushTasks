@@ -40,8 +40,8 @@ public abstract class BaseObject {
     public abstract void move();
 
     public boolean isIntersec(BaseObject o) {
-        double a = Math.sqrt(Math.pow(o.getX()-getX(),2) + Math.pow(o.getY() + getY(),2));
+        double dinstanceBetweenObjects = Math.sqrt(Math.pow(o.getX() - getX(),2) + Math.pow(o.getY() - getY(),2));
         double maxRadius = getRadius() > o.getRadius() ? getRadius() : o.getRadius();
-        return true;
+        return dinstanceBetweenObjects <= maxRadius;
     }
 }
