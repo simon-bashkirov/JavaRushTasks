@@ -1,15 +1,14 @@
 package com.javarush.task.task20.task2025;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /*
 Алгоритмы-числа
 */
-public class Solution {
+public class SolutionTest {
     public static void main(String[] args) {
-        System.out.println(getNumbers(1000));
+        System.out.println(getNumbers(400));
     }
 
     public static long[] getNumbers(long N) {
@@ -21,7 +20,7 @@ public class Solution {
             number.increment();
             if (number.itself() == number.getSumOfDigitPowerM()) {
                 alResult.add(number.itself());
-//                printNumber(number);
+                printNumber(number);
             }
         }
 
@@ -47,4 +46,13 @@ public class Solution {
         }
         System.out.println(output.toString());
     }
+
+    /*public static void numberToDigits(long number) {
+        LinkedList<Integer> stack = new LinkedList<>();
+        while (number > 0) {
+            stack.push((int)(number%10));
+            number = number/10;
+        }
+    }*/
+
 }

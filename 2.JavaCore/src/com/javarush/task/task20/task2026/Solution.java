@@ -16,12 +16,20 @@ public class Solution {
     }
 
     public static int getRectangleCount(byte[][] a) {
-        int size = a.length;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        int countOfRectangles = 0;
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                if (a[i][j] == 1) {
+                    if (    (i-1 >= 0 && a[i-1][j] == 1) ||
+                            (j-1 >= 0 && a[i][j-1] == 1)
+                            ) {
+                        countOfRectangles++;
+                        System.out.println("a[" + i + "][" + j + "] = " + a[i][j]);
+                    }
 
+                }
             }
         }
-        return 0;
+        return countOfRectangles;
     }
 }
