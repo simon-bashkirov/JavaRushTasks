@@ -8,13 +8,17 @@ import java.util.Arrays;
 */
 public class Solution {
     public static boolean calculate(boolean a, boolean b, boolean c, boolean d) {
-//        return (c);
-        return !a && !b && c || c;
+//        return !a && !b && c || c;
+        return c;
     }
 
     public static boolean calculateNew(boolean a, boolean b, boolean c, boolean d) {
+        return a && b && c && !d || !a && c || !b && c || c;
+    }
+
+    public static boolean calculateOriginal(boolean a, boolean b, boolean c, boolean d) {
         return (a && b && c && !d) || (!a && c) || (!b && c) || (c && d);
-//        return (a && b && c && !d) || (!a && c) || (!b && c) || (c && d);
+//        return c;
     }
 
     public static void main(String[] args) {
@@ -56,11 +60,16 @@ public class Solution {
 
     public static void test() {
         boolean[][] matrix = getTestMatrix(4);
+        int matchCount = 0;
         for (boolean[] aMatrix : matrix) {
             System.out.print(Arrays.toString(aMatrix) + "  ");
-            boolean calculateOriginal = calculate(aMatrix[0],aMatrix[1],aMatrix[2],aMatrix[3]);
-            boolean calculateNew = calculateNew(aMatrix[0],aMatrix[1],aMatrix[2],aMatrix[3]);
-            System.out.println("calculate: " + calculateOriginal + ", calculateNew: " + calculateNew + ", matches: " + (calculateOriginal == calculateNew ? "yes" : "NO"));
+            boolean calculateOriginal = calculateOriginal(aMatrix[0],aMatrix[1],aMatrix[2],aMatrix[3]);
+            boolean calculateNew = calculate(aMatrix[0],aMatrix[1],aMatrix[2],aMatrix[3]);
+            boolean matches = calculateOriginal == calculateNew;
+            if (matches) matchCount++;
+            System.out.println("calculate: " + calculateOriginal + ", calculateNew: " + calculateNew + ", matches: " + (matches ? "yes" : "NO"));
         }
+        System.out.println();
+        System.out.println(matchCount == 16 ? "All tests were passed" : matchCount + " tests were passed");
     }
 }

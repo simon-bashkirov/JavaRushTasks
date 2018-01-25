@@ -10,10 +10,10 @@ public class Solution {
 
     static {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
         try {
             firstFileName = reader.readLine();
             secondFileName = reader.readLine();
-            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,8 +57,7 @@ public class Solution {
         public String getFileContent() {
             fileContent = "";
             for (String row : rowByRow) {
-                fileContent += row;
-                fileContent += " ";
+                fileContent += row + " ";
             }
             return fileContent;
         }
@@ -75,6 +74,7 @@ public class Solution {
                 }
 
                 fileReader.close();
+                fileInputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -19,7 +19,7 @@ public class Solution {
 //        args = new String[5]; args[0] = "-u"; args[1] = "19848"; args[2] = "beach shorts purple"; args[3] = "150.00"; args[4] = "2";
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            fileName = reader.readLine();
+        fileName = reader.readLine();
 //            fileName = "D:\\IdeaProjects\\JavaRushTasks\\source_files\\task1828\\1.txt";
         reader.close();
 
@@ -133,6 +133,7 @@ public class Solution {
     public static Integer getMaxIdI(String fileName) throws IOException {
         int maxId = 0;
         BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
+//        BufferedReader fileReader = new BufferedReader(new FileInputStream(fileName));
 
         while (fileReader.ready()) {
             String row = fileReader.readLine();
