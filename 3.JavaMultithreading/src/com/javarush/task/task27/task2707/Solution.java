@@ -13,8 +13,17 @@ public class Solution {
     }
 
     public static boolean isNormalLockOrder(final Solution solution, final Object o1, final Object o2) throws Exception {
-        //do something here
-        solution.someMethodWithSynchronizedBlocks(o1,o2);
+        /*synchronized (o1) {
+            solution.someMethodWithSynchronizedBlocks(o1,o2);
+            o1.wait();
+        }*/
+        synchronized (o2) {
+            solution.someMethodWithSynchronizedBlocks(o1,o2);
+            synchronized (o1) {
+                o2.wait();
+                o1.
+            }
+        }
 
         //
         return false;

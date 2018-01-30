@@ -17,8 +17,10 @@ public class Apartment {
         this.location = location;
     }
 
-    public synchronized void revalidate(boolean isEmpty) {
-        if (isEmpty)
-            realEstate.up(this);
+    public void revalidate(boolean isEmpty) {
+        synchronized (this) {
+            if (isEmpty)
+                realEstate.up(this);
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.javarush.task.task27.task2708;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 /* 
@@ -14,6 +16,7 @@ public class Solution {
 
         final Apartment[] apartments = allApartments.toArray(new Apartment[allApartments.size()]);
 
+//        System.out.println(Arrays.toString(apartments));
         for (int i = 0; i < 20; i++) {
             new Thread(new Runnable() {
                 @Override
@@ -47,5 +50,7 @@ public class Solution {
         });
         deamonThread.setDaemon(true);
         deamonThread.start();
+//        System.out.println(Arrays.toString(apartments));
+//        System.out.println(realEstate.activeApartments);
     }
 }
