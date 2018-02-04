@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Student extends UniversityPerson {
     private double averageGrade;
-
     private int course;
     private Date beginningOfSession;
     private Date endOfSession;
@@ -24,10 +23,6 @@ public class Student extends UniversityPerson {
     public void learn() {
     }
 
-    public void printData() {
-        System.out.println("Студент: " + name);
-    }
-
     public void incAverageGradeBy01() {
         averageGrade += 0.1;
     }
@@ -36,15 +31,20 @@ public class Student extends UniversityPerson {
         averageGrade += 0.2;
     }
 
-    public void setValue(String name, double value) {
-        if (name.equals("averageGrade")) {
-            averageGrade = value;
-            return;
-        }
-        if (name.equals("course")) {
-            course = (int) value;
-            return;
-        }
+    public void setAverageGrade(double averageGrade) {
+        this.averageGrade = averageGrade;
+    }
+
+    public void setCourse(int course) {
+        this.course = course;
+    }
+
+    public double getAverageGrade() {
+        return averageGrade;
+    }
+
+    public int getCourse() {
+        return course;
     }
 
     public void setBeginningOfSession(int day, int month, int year) {
@@ -55,11 +55,8 @@ public class Student extends UniversityPerson {
         endOfSession = new Date(year, month, day);
     }
 
-    public double getAverageGrade() {
-        return averageGrade;
-    }
-
-    public int getCourse() {
-        return course;
+    @Override
+    public String getPosition() {
+        return "Студент";
     }
 }
