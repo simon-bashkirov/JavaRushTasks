@@ -7,8 +7,10 @@ import java.util.List;
 public class Student extends Human {
     private double averageGrade;
     private String university;
+    private int course;
     private Date beginningOfSession;
     private Date endOfSession;
+
 
     public Student(String name, int age, double averageGrade) {
         super(name, age);
@@ -63,5 +65,9 @@ public class Student extends Human {
 
     public double getAverageGrade() {
         return averageGrade;
+    }
+
+    public int getCourse() {
+        return course;
     }
 }
