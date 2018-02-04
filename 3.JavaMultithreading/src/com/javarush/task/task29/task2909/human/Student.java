@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Student extends Human {
+public class Student extends UniversityPerson {
     private double averageGrade;
-    private String university;
+
     private int course;
     private Date beginningOfSession;
     private Date endOfSession;
@@ -22,14 +22,6 @@ public class Student extends Human {
     }
 
     public void learn() {
-    }
-
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
     }
 
     public void printData() {
