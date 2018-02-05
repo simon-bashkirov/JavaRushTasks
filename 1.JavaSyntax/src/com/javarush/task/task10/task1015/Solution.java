@@ -8,20 +8,22 @@ import java.util.ArrayList;
 
 public class Solution {
     public static void main(String[] args) {
-        //ArrayList<String>[] arrayOfStringList = createList();
-        //printList(arrayOfStringList);
+        ArrayList<String>[] arrayOfStringList = createList();
+        printList(arrayOfStringList);
     }
 
-    /*public static ArrayList<String>[] createList() {
-        ArrayList<String>[] list = new ArrayList<~>[3];
-        list[0].add("a");
-        list[0].add("b");
-        list[1].add("c");
-        list[1].add("d");
-        list[2].add("e");
-        list[2].add("f");
-        return list;
-    }*/
+    public static ArrayList<String>[] createList() {
+        ArrayList<String>[] arrayOfStringList = new ArrayList[5];
+        for (int i = 0; i < 5; i++) {
+            ArrayList<String> list = new ArrayList<>();
+            for (int j = 0; j < 10; j++) {
+                list.add(String.valueOf(j));
+            }
+            arrayOfStringList[i] = list;
+        }
+
+        return arrayOfStringList;
+    }
 
     public static void printList(ArrayList<String>[] arrayOfStringList) {
         for (ArrayList<String> list : arrayOfStringList) {
