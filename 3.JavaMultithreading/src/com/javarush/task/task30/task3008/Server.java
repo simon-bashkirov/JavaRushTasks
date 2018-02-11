@@ -10,10 +10,10 @@ public class Server {
     private static Map<String, Connection> connectionMap = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
-        System.out.println("Введите номер порта:");
+        ConsoleHelper.writeMessage("Введите номер порта:");
         int portNumber = ConsoleHelper.readInt();
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-            System.out.println("Сервер запущен");
+            ConsoleHelper.writeMessage("Сервер запущен");
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -27,11 +27,11 @@ public class Server {
     }
 
     public static void sendBroadcastMessage(Message message) {
-        for (ConcurrentHashMap.Entry<String, Connection> entry : connectionMap.entrySet()) {
+        for (Connection connection : connectionMap.values()) {
             try {
-                entry.getValue().send(message);
+                connection.send(message);
             } catch (IOException e) {
-                System.out.println("Сообщение не было отправлено");
+                ConsoleHelper.writeMessage("Сообщение не было отправлено");
             }
         }
     }
@@ -65,6 +65,17 @@ public class Server {
                 if (!name.equals(userName)) {
                     connection.send(new Message(MessageType.USER_ADDED, name));
                 }
+            }
+        }
+
+        private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
+            while (true) {
+                Message message = connection.receive();
+                if (message.getType() == MessageType.TEXT) {
+                    Message messageWithName = new Message(MessageType.TEXT, userName + ": " + message.getData());
+                    sendBroadcastMessage(messageWithName);
+                } else
+                    ConsoleHelper.writeMessage("Сообщение не является текстом");
             }
         }
     }
