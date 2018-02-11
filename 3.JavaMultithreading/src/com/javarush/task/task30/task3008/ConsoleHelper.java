@@ -13,23 +13,33 @@ public class ConsoleHelper {
 
     public static String readString() {
         String string = null;
-        try {
-            string = bufferedReader.readLine();
-        } catch (IOException e) {
-            System.out.println("Произошла ошибка при попытке ввода текста. Попробуйте еще раз.");
-            string = readString();
+        int numTries = 3;
+
+        while(numTries-- > 0) {
+            try {
+                string = bufferedReader.readLine();
+                break;
+            } catch (IOException e) {
+                System.out.println("Произошла ошибка при попытке ввода текста. Попробуйте еще раз.");
+            }
         }
+
         return string;
     }
 
     public static int readInt() {
         int i = 0;
-        try {
-            i = Integer.parseInt(readString());
-        } catch (NumberFormatException e) {
-            System.out.println("Произошла ошибка при попытке ввода числа. Попробуйте еще раз.");
-            i = readInt();
+        int numTries = 3;
+
+        while(numTries-- > 0) {
+            try {
+                i = Integer.parseInt(readString());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Произошла ошибка при попытке ввода числа. Попробуйте еще раз.");
+            }
         }
+
         return i;
     }
 }

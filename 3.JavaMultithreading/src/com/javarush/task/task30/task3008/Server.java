@@ -10,10 +10,10 @@ public class Server {
     private static Map<String, Connection> connectionMap = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
-        System.out.println("Please enter port number:");
+        System.out.println("Введите номер порта:");
         int portNumber = ConsoleHelper.readInt();
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-            System.out.println("Server is started");
+            System.out.println("Сервер запущен");
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -41,6 +41,23 @@ public class Server {
 
         public Handler(Socket socket) {
             this.socket = socket;
+        }
+
+        private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
+//            int numTries = 3;
+            Message message;
+            while(true) { //numTries-- > 0
+                connection.send(new Message(MessageType.NAME_REQUEST));
+                message = connection.receive();
+                if (message.getType() == MessageType.USER_NAME &&
+                        !message.getData().isEmpty() &&
+                        !connectionMap.containsKey(message.getData())
+                )
+                    break;
+            }
+            connectionMap.put(message.getData(), connection);
+            connection.send(new Message(MessageType.NAME_ACCEPTED));
+            return message.getData();
         }
     }
 }
