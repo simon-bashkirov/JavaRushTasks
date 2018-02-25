@@ -12,11 +12,11 @@ Null Object Pattern
 public class Solution {
     private FileData fileData;
 
-    public Solution(String pathToFile) throws IOException {
+    public Solution(String pathToFile) {
         Path path = Paths.get(pathToFile);
-        if (Files.exists(path)) {
+        try {
             fileData = new ConcreteFileData(Files.isHidden(path), Files.isExecutable(path), Files.isDirectory(path), Files.isWritable(path));
-        } else {
+        } catch (IOException e) {
             fileData = new NullFileData(new FileNotFoundException("File " + pathToFile + " does not exist"));
         }
     }
