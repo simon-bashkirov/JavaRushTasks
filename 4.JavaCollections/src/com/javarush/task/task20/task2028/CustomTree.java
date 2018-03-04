@@ -1,7 +1,5 @@
 package com.javarush.task.task20.task2028;
 
-import java.awt.*;
-import java.io.Closeable;
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Collection;
@@ -12,6 +10,9 @@ import java.util.ListIterator;
 Построй дерево(1)
 */
 public class CustomTree extends AbstractList<String> implements Cloneable, Serializable {
+    Entry<String> root;
+    Entry<String> currentEntry;
+
     public static void main(String[] args) {
         List<String> list = new CustomTree();
         for (int i = 1; i < 16; i++) {
@@ -22,15 +23,49 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         //System.out.println("Expected null, actual is " + ((CustomTree) list).getParent("11"));
     }
 
+    public CustomTree() {
+        this("0");
+    }
 
-    @Override
-    public String get(int index) {
-        throw new UnsupportedOperationException();
+    public CustomTree(String s) {
+        root = currentEntry = new Entry<>(s);
     }
 
     @Override
     public int size() {
         return 0;
+    }
+
+    @Override
+    public boolean add(String s) {
+        Entry<String> entry = new Entry<>(s);
+        if (!currentEntry.isAvailableToAddChildren()) {
+            if (currentEntry.getLeftChild().isAvailableToAddChildren())
+                currentEntry = currentEntry.getLeftChild();
+            else if (currentEntry.getRightChild().isAvailableToAddChildren())
+                currentEntry = currentEntry.getRightChild();
+            else
+                throw new RuntimeException(new CustomTreeStructureException());
+        }
+        entry.setParent(currentEntry);
+        entry.setLineNumber(currentEntry.getLineNumber()+1);
+        currentEntry.addChild(entry);
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return super.remove(o);
+    }
+
+    public String getParent(String s) {
+
+        return null;
+    }
+
+    @Override
+    public String get(int index) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -66,5 +101,71 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
     @Override
     public boolean addAll(int index, Collection<? extends String> c) {
         throw new UnsupportedOperationException();
+    }
+
+    static class Entry<T> implements Serializable {
+        String elementName;
+        int lineNumber;
+        boolean availableToAddLeftChildren, availableToAddRightChildren;
+        Entry<T> parent, leftChild, rightChild;
+
+        public Entry(String elementName) {
+            this.elementName = elementName;
+            availableToAddLeftChildren = true;
+            availableToAddRightChildren = true;
+        }
+
+        void checkChildren() {
+            if (leftChild != null)
+                availableToAddLeftChildren = false;
+            if (rightChild != null)
+                availableToAddRightChildren = false;
+        }
+
+        boolean isAvailableToAddChildren() {
+            return availableToAddLeftChildren || availableToAddRightChildren;
+        }
+
+        boolean addChild(Entry<T> entry) {
+            if (availableToAddLeftChildren)
+                leftChild = entry;
+            else if (availableToAddRightChildren)
+                rightChild = entry;
+            else return false;
+            return true;
+        }
+
+        int getLineNumber() {
+            return lineNumber;
+        }
+
+        void setLineNumber(int lineNumber) {
+            this.lineNumber = lineNumber;
+        }
+
+        Entry<T> getParent() {
+            return parent;
+        }
+
+        void setParent(Entry<T> parent) {
+            this.parent = parent;
+        }
+
+        Entry<T> getLeftChild() {
+            return leftChild;
+        }
+
+        Entry<T> getRightChild() {
+            return rightChild;
+        }
+
+        int getCountOfChildren() {
+            return 0;
+        }
+
+    }
+
+    static class CustomTreeStructureException extends Exception {
+
     }
 }
