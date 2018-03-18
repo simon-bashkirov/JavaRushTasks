@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 public class Number {
     private ArrayList<Digit> digits = new ArrayList<>();
-//    public Digit currentDigit;
+    private ArrayList<Long> digitsSums = new ArrayList<>();
     private int currentDigitIndex;
     private long numberItself;
 
     public Number() {
-        digits.add(new Digit(0,0L));
-        currentDigitIndex = 0;
-        numberItself = 0;
+        digits.add(new Digit(this));
+        digitsSums.add(0L);
     }
 
     public void increment() {
@@ -22,14 +21,17 @@ public class Number {
 
     private void incrementDigits() {
         if (getCurrentDigit().getDigit() < 9) {
-            getCurrentDigit().increment(digits.size());
+//            long newSum = digitsSums.get(currentDigitIndex)-getCurrentDigit().getDigit();
+            getCurrentDigit().increment();
+//            newSum +=
         } else {
             getCurrentDigit().setToZero();
             if (currentDigitIndex > 0) {
                 currentDigitIndex--;
                 incrementDigits();
             } else {
-                digits.add(0,new Digit(1,1L));
+                digits.add(0,new Digit(1,1L, this));
+                Digit.populateMatrixOfPowers(size());
             }
         }
     }
@@ -54,11 +56,8 @@ public class Number {
         return digits.get(currentDigitIndex);
     }
 
-    private void setCurrentDigit(Digit digit) {
-        digits.set(currentDigitIndex, digit);
-    }
-
     public ArrayList<Digit> getDigits() {
         return digits;
     }
+
 }
