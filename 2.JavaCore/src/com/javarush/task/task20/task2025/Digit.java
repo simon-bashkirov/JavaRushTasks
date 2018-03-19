@@ -42,11 +42,10 @@ public class Digit {
     }
 
     public void increment() {
-        digit++;
-        digitPowerM = findMPower();
+        digitPowerM = findMPower(++digit);
     }
 
-    public long findMPower() {
+    public long findMPower(int digit) {
 //        return (long)Math.pow(digit,number.size());
         return matrixOfPowers.get(digit).get(number.size()-1);
     }
