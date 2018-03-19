@@ -21,9 +21,11 @@ public class Number {
 
     private void incrementDigits() {
         if (getCurrentDigit().getDigit() < 9) {
-//            long newSum = digitsSums.get(currentDigitIndex)-getCurrentDigit().getDigit();
+            long sum = digitsSums.get(currentDigitIndex) - getCurrentDigit().getDigitPowerM();
             getCurrentDigit().increment();
-//            newSum +=
+            sum += getCurrentDigit().getDigitPowerM();
+            repopulateSumOfPowerMForZeros(sum);
+
         } else {
             getCurrentDigit().setToZero();
             if (currentDigitIndex > 0) {
@@ -32,6 +34,10 @@ public class Number {
             } else {
                 digits.add(0,new Digit(1,1L, this));
                 Digit.populateMatrixOfPowers(size());
+                digitsSums.add(0, 1L);
+                for (int i = 1; i < digitsSums.size(); i++) {
+                    digitsSums.set(i, digitsSums.get(i-1) + digits.get(i).getDigitPowerM());
+                }
             }
         }
     }
@@ -44,12 +50,28 @@ public class Number {
         return numberItself;
     }
 
-    public long getSumOfDigitPowerM() {
+    public void repopulateSumOfPowerMForZeros(long sum) {
+        for (int i = currentDigitIndex; i < size(); i++) {
+            digitsSums.set(i, sum);
+        }
+    }
+
+    public void repopulateSumOfPowerMForAll() {
         long sum = 0L;
+        int i = 0;
+        for (Digit digit : digits) {
+            sum += digit.getDigitPowerM();
+            digitsSums.set(i++, sum);
+        }
+    }
+
+    public long getSumOfDigitPowerM() {
+        /*long sum = 0L;
         for (Digit digit : digits) {
             sum += digit.getDigitPowerM();
         }
-        return sum;
+        return sum;*/
+        return digitsSums.get(size()-1);
     }
 
     private Digit getCurrentDigit() {

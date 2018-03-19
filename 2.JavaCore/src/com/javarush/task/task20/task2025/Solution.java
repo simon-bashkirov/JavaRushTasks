@@ -10,7 +10,7 @@ public class Solution {
     public static void main(String[] args) {
         double beforeTs = System.currentTimeMillis();
 //        System.out.println(getNumbers(10000));
-        System.out.println(Arrays.toString(getNumbers(200_000)));
+        System.out.println(Arrays.toString(getNumbers(2000_000)));
         double afterTs = System.currentTimeMillis();
         Runtime runtime = Runtime.getRuntime();
         double memory = runtime.totalMemory() - runtime.freeMemory();
