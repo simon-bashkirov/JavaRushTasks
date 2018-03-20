@@ -21,6 +21,10 @@ public class Digit {
         this(0, 0L, number);
     }
 
+    public Digit (int digit, Number number) {
+        this(digit, )
+    }
+
     public Digit(int digit, Long digitPowerM, Number number) {
         this.digit = digit;
         this.digitPowerM = digitPowerM;

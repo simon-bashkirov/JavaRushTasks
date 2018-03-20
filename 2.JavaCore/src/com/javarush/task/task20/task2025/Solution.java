@@ -10,7 +10,7 @@ public class Solution {
     public static void main(String[] args) {
         double beforeTs = System.currentTimeMillis();
 //        System.out.println(getNumbers(10000));
-        System.out.println(Arrays.toString(getNumbers(2000_000)));
+        System.out.println(Arrays.toString(getNumbers(2_000)));
         double afterTs = System.currentTimeMillis();
         Runtime runtime = Runtime.getRuntime();
         double memory = runtime.totalMemory() - runtime.freeMemory();
@@ -28,6 +28,8 @@ public class Solution {
             if (number.itself() == number.getSumOfDigitPowerM()) {
                 alResult.add(number.itself());
 //                printNumber(number);
+            } else if (number.itself() < number.getSumOfDigitPowerM()) {
+
             }
         }
 
