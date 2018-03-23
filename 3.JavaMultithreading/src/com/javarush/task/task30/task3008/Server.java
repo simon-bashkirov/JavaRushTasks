@@ -14,7 +14,6 @@ public class Server {
         int portNumber = ConsoleHelper.readInt();
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             ConsoleHelper.writeMessage("Сервер запущен");
-
             while (true) {
                 Socket socket = serverSocket.accept();
                 Handler handler = new Handler(socket);
@@ -41,6 +40,26 @@ public class Server {
 
         public Handler(Socket socket) {
             this.socket = socket;
+        }
+
+        public void run() {
+            ConsoleHelper.writeMessage("Установлено новое соединение с " + socket.getRemoteSocketAddress());
+            String userName = null;
+            try (Connection connection = new Connection(socket)) {
+                userName = serverHandshake(connection);
+                sendBroadcastMessage(new Message(MessageType.USER_ADDED, userName));
+                sendListOfUsers(connection, userName);
+                serverMainLoop(connection, userName);
+            } catch (IOException|ClassNotFoundException e) {
+                ConsoleHelper.writeMessage("Произошла ошибка при обмене данными с " + socket.getRemoteSocketAddress());
+            }
+
+            if (userName != null) {
+                connectionMap.remove(userName);
+                sendBroadcastMessage(new Message(MessageType.USER_REMOVED, userName));
+            }
+
+            ConsoleHelper.writeMessage("Cоединение с " + socket.getRemoteSocketAddress() + " закрыто");
         }
 
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
