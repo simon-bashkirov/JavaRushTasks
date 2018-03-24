@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.javarush.task.task30.task3008.MessageType.*;
+
 public class Server {
     private static Map<String, Connection> connectionMap = new ConcurrentHashMap<>();
 
@@ -47,7 +49,7 @@ public class Server {
             String userName = null;
             try (Connection connection = new Connection(socket)) {
                 userName = serverHandshake(connection);
-                sendBroadcastMessage(new Message(MessageType.USER_ADDED, userName));
+                sendBroadcastMessage(new Message(USER_ADDED, userName));
                 sendListOfUsers(connection, userName);
                 serverMainLoop(connection, userName);
             } catch (IOException|ClassNotFoundException e) {
@@ -56,7 +58,7 @@ public class Server {
 
             if (userName != null) {
                 connectionMap.remove(userName);
-                sendBroadcastMessage(new Message(MessageType.USER_REMOVED, userName));
+                sendBroadcastMessage(new Message(USER_REMOVED, userName));
             }
 
             ConsoleHelper.writeMessage("Cоединение с " + socket.getRemoteSocketAddress() + " закрыто");
@@ -66,23 +68,23 @@ public class Server {
 //            int numTries = 3;
             Message message;
             while(true) { //numTries-- > 0
-                connection.send(new Message(MessageType.NAME_REQUEST));
+                connection.send(new Message(NAME_REQUEST));
                 message = connection.receive();
-                if (message.getType() == MessageType.USER_NAME &&
+                if (message.getType() == USER_NAME &&
                         !message.getData().isEmpty() &&
                         !connectionMap.containsKey(message.getData())
                 )
                     break;
             }
             connectionMap.put(message.getData(), connection);
-            connection.send(new Message(MessageType.NAME_ACCEPTED));
+            connection.send(new Message(NAME_ACCEPTED));
             return message.getData();
         }
 
         private void sendListOfUsers(Connection connection, String userName) throws IOException {
             for (String name : connectionMap.keySet()) {
                 if (!name.equals(userName)) {
-                    connection.send(new Message(MessageType.USER_ADDED, name));
+                    connection.send(new Message(USER_ADDED, name));
                 }
             }
         }
@@ -90,8 +92,8 @@ public class Server {
         private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
             while (true) {
                 Message message = connection.receive();
-                if (message.getType() == MessageType.TEXT) {
-                    Message messageWithName = new Message(MessageType.TEXT, userName + ": " + message.getData());
+                if (message.getType() == TEXT) {
+                    Message messageWithName = new Message(TEXT, userName + ": " + message.getData());
                     sendBroadcastMessage(messageWithName);
                 } else
                     ConsoleHelper.writeMessage("Сообщение не является текстом");

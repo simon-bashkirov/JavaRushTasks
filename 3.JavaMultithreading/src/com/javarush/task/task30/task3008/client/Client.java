@@ -7,6 +7,8 @@ import com.javarush.task.task30.task3008.MessageType;
 
 import java.io.IOException;
 
+import static com.javarush.task.task30.task3008.MessageType.*;
+
 public class Client {
     protected Connection connection;
     private volatile boolean clientConnected = false;
@@ -26,13 +28,16 @@ public class Client {
                 wait();
             } catch (InterruptedException e) {
                 ConsoleHelper.writeMessage("Возникло исключения во время ожидания соединения с сервером");
+                return;
             }
         }
 
         if (clientConnected)
             System.out.println("Соединение установлено. Для выхода наберите команду 'exit'.");
-        else
+        else {
             System.out.println("Произошла ошибка во время работы клиента.");
+            return;
+        }
          
         String text;
         while (clientConnected && !(text = ConsoleHelper.readString()).equals("exit")) {
@@ -67,7 +72,7 @@ public class Client {
 
     protected void sendTextMessage(String text) {
         try {
-            Message message = new Message(MessageType.TEXT, text);
+            Message message = new Message(TEXT, text);
             connection.send(message);
         } catch (IOException e) {
             clientConnected = false;
@@ -90,7 +95,38 @@ public class Client {
         }
 
         protected void notifyConnectionStatusChanged(boolean clientConnected) {
-            Client
+            synchronized (Client.this) {
+                Client.this.clientConnected = clientConnected;
+                Client.this.notify();
+            }
+        }
+
+        protected void  clientHandshake() throws IOException, ClassNotFoundException {
+            while (true) {
+                Message message = connection.receive();
+                if (message.getType() == NAME_REQUEST)
+                    connection.send(new Message(USER_NAME, getUserName()));
+                else if (message.getType() == NAME_ACCEPTED) {
+                    notifyConnectionStatusChanged(true);
+                    break;
+                }
+                else
+                    throw new IOException("Unexpected MessageType");
+            }
+        }
+
+        protected void clientMainLoop() throws IOException, ClassNotFoundException {
+            while (true) {
+                Message message = connection.receive();
+                if (message.getType() == TEXT)
+                    processIncomingMessage(message.getData());
+                else if (message.getType() == USER_ADDED)
+                    informAboutAddingNewUser(message.getData());
+                else if (message.getType() == USER_REMOVED)
+                    informAboutDeletingNewUser(message.getData());
+                else
+                    throw new IOException("Unexpected MessageType");
+            }
         }
 
     }
