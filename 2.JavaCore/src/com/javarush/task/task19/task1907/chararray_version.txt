@@ -1,0 +1,72 @@
+package com.javarush.task.task19.task1907;
+
+/*
+Считаем слово
+*/
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Solution {
+    public static String word = "world";
+    public static int countOfWord = 0;
+
+    public static void main(String[] args) throws IOException {
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//        String fileName = reader.readLine();
+//        reader.close();
+        String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task1907.txt";
+        char[] wordToChars = word.toCharArray();
+
+        FileReader fileReader = new FileReader(fileName);
+
+        CharArray charArray = new CharArray();
+        while (fileReader.ready()) {
+            int data = fileReader.read();
+            char ch = (char)data;
+            if (Character.isLetter(ch))  charArray.add(ch);
+            else {
+//                System.out.println("charArray.getCharArray(): " + Arrays.toString(charArray.getCharArray()));
+//                System.out.println("wordToChars: " + Arrays.toString(wordToChars));
+//                System.out.println();
+                if(Arrays.equals(charArray.getCharArray(), wordToChars)) {
+                    countOfWord++;
+                }
+                charArray.reset();
+            }
+        }
+
+        fileReader.close();
+
+        System.out.println(countOfWord);
+
+
+    }
+
+    public static class CharArray {
+        char[] charArray;
+
+        public CharArray() {
+            this.charArray = new char[0];
+        }
+
+        public void add(char ch) {
+            char[] tmpCharAray = new char[charArray.length+1];
+            for (int i = 0; i < charArray.length; i++) tmpCharAray[i] = charArray[i];
+            charArray = tmpCharAray;
+            charArray[charArray.length-1] = ch;
+
+        }
+
+        public char[] getCharArray() {
+            return charArray;
+        }
+
+        public void reset() {
+            this.charArray = new char[0];
+        }
+    }
+}
