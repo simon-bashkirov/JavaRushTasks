@@ -1,0 +1,6 @@
+/*if ((content.length >= minSize)) System.out.println(file + " --> (content.length >= minSize) is true for " );
+        if ((maxSize > 0 ? content.length <= maxSize : true)) System.out.println(file + " --> (maxSize > 0 ? content.length <= maxSize : true) is true" );
+        if ((partOfName == null || file.toString().matches(".*" + partOfName + ".*")))
+            System.out.println(file + " --> (partOfName == null || file.toString().matches(\".*\" + partOfName + \".*\")) is true" );
+        if ((partOfContent == null || contentString.matches("(?s).*" + partOfContent + ".*")))
+            System.out.println(file + " --> (partOfContent == null || contentString.matches(\".*\" + partOfContent + \".*\")) is true" );*/

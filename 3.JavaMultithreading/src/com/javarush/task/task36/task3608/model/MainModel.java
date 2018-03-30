@@ -1,7 +1,8 @@
 package com.javarush.task.task36.task3608.model;
 
 import com.javarush.task.task36.task3608.bean.User;
-import com.javarush.task.task36.task3608.model.service.*;
+import com.javarush.task.task36.task3608.model.service.UserService;
+import com.javarush.task.task36.task3608.model.service.UserServiceImpl;
 
 //import java.util.ArrayList;
 import java.util.List;
