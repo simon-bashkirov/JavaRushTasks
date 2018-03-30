@@ -1,15 +1,21 @@
 package com.javarush.task.task20.task2025;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.Arrays;
 
 /*
 Алгоритмы-числа
 */
 public class Solution {
     public static void main(String[] args) {
-        System.out.println(getNumbers(1000));
+        double beforeTs = System.currentTimeMillis();
+//        System.out.println(getNumbers(10000));
+        System.out.println(Arrays.toString(getNumbers(2_000)));
+        double afterTs = System.currentTimeMillis();
+        Runtime runtime = Runtime.getRuntime();
+        double memory = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Time elapsed: " + (afterTs-beforeTs)/1000);
+        System.out.println("Used memory is megabytes: " + memory/1024/1024);
     }
 
     public static long[] getNumbers(long N) {
@@ -22,6 +28,8 @@ public class Solution {
             if (number.itself() == number.getSumOfDigitPowerM()) {
                 alResult.add(number.itself());
 //                printNumber(number);
+            } else if (number.itself() < number.getSumOfDigitPowerM()) {
+
             }
         }
 
