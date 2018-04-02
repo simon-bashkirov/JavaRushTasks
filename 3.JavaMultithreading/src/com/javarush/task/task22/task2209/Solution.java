@@ -13,8 +13,8 @@ import java.util.List;
 public class Solution {
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        String fileName = bufferedReader.readLine();
-//        String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task2209\\1.txt";
+//        String fileName = bufferedReader.readLine();
+        String fileName = "D:\\dev\\JavaRushTasks\\source_files\\task2209\\1.txt";
         bufferedReader.close();
 
         BufferedReader bufferedFileReader = new BufferedReader(new FileReader(fileName));
@@ -24,6 +24,7 @@ public class Solution {
         bufferedFileReader.close();
 
         StringBuilder result = getLine(s_splitted);
+        System.out.println("Initial string: [" + s + "]");
         System.out.println(result.toString());
     }
 
@@ -32,27 +33,44 @@ public class Solution {
         StringBuilder result = new StringBuilder();
         if (list.size() > 0) {
             result.append(list.remove(0));
+            outer:
             while(list.size() > 0) {
-//            where();
-                char lastLetter = result.charAt(result.length()-1);
-//            System.out.println(result.toString());
-//            System.out.println(lastLetter);
+//                System.out.println(result.toString());
+                char resultLastLetter = Character.toLowerCase(result.charAt(result.length()-1));
                 for (int i =0; i < list.size(); i++) {
-//                where();
-                    String w = list.get(i);
-                    char firstLetter = Character.toLowerCase(w.charAt(0));
-//                System.out.println(w);
-//                System.out.println(firstLetter);
-                    if (lastLetter==firstLetter) {
-//                    System.out.println("lastLetter==firstLetter");
-                        result.append(" ").append(w);
+                    String word = list.get(i);
+                    char wordFirstLetter = Character.toLowerCase(word.charAt(0));
+                    if (resultLastLetter==wordFirstLetter) {
+                        result.append(" ").append(word);
                         list.remove(i);
-                        break;
+                        continue outer;
+                    } else {
+                        char resultFirstLetter = Character.toLowerCase(result.charAt(0));
+                        char wordLastLetter = Character.toLowerCase(word.charAt(word.length()-1));
+                        if (resultFirstLetter==wordLastLetter) {
+                            result.insert(0, word + " ");
+                            list.remove(i);
+                            continue outer;
+                        }
                     }
                 }
+                break;
             }
         }
         return result;
+    }
+
+    public static void printPairs(List<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            List<String> pairs = new ArrayList<>();
+            String word = list.get(i);
+            for (int j = 0; j < list.size(); j++) {
+                if (i!=j) {
+
+                }
+
+            }
+        }
     }
 
     public static void where() {
@@ -62,5 +80,10 @@ public class Solution {
             e.printStackTrace();
         }
         System.out.println( Thread.currentThread().getStackTrace()[1].getLineNumber());
+    }
+
+    public enum Position {
+        BEFORE,
+        AFTER;
     }
 }

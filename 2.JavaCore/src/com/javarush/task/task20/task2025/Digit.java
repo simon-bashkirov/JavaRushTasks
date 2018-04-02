@@ -22,7 +22,7 @@ public class Digit {
     }
 
     public Digit (int digit, Number number) {
-        this(digit, )
+        this(digit, 0L, number);
     }
 
     public Digit(int digit, Long digitPowerM, Number number) {
