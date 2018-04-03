@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 public class Archiver {
     public static void main(String[] args) throws IOException {
 
-        /*Operation operation = null;
+        Operation operation = null;
         do {
             try {
                 operation = askOperation();
@@ -19,10 +19,10 @@ public class Archiver {
                 ConsoleHelper.writeMessage("Произошла ошибка. Проверьте введенные данные.");
             }
 
-        } while (operation != Operation.EXIT);*/
+        } while (operation != Operation.EXIT);
 
-        FileManager fileManager = new FileManager(Paths.get("D:\\dev\\JavaRushTasks\\source_files\\task3110"));
-        System.out.println(fileManager.getFileList());
+        /*FileManager fileManager = new FileManager(Paths.get("D:\\dev\\JavaRushTasks\\source_files\\task3110"));
+        System.out.println(fileManager.getFileList());*/
     }
 
 
