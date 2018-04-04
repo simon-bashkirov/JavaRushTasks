@@ -4,10 +4,12 @@ import com.javarush.task.task31.task3110.exception.PathIsNotFoundException;
 import com.javarush.task.task31.task3110.exception.WrongZipFileException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -53,28 +55,49 @@ public class ZipFileManager {
         }
     }
 
-    public List<FileProperties> getFilesList() throws Exception {
+    public void extractAll(Path outputFolder) throws Exception {
         if (!Files.isRegularFile(zipFile))
             throw new WrongZipFileException();
 
-        List<FileProperties> filePropertiesList = new ArrayList<>();
+        if (Files.notExists(outputFolder))
+            Files.createDirectories(outputFolder);
 
         try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile))) {
+
             ZipEntry nextEntry;
-            while ( (nextEntry = zipInputStream.getNextEntry()) != null ) {
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                copyData(zipInputStream, byteArrayOutputStream);
-                String name = nextEntry.getName();
-                long size = nextEntry.getSize();
-                long compressedSize = nextEntry.getCompressedSize();
-                int compressionMethod = nextEntry.getMethod();
-                FileProperties fileProperties = new FileProperties(name, size, compressedSize, compressionMethod);
-                filePropertiesList.add(fileProperties);
+
+            while ((nextEntry = zipInputStream.getNextEntry()) != null) {
+                extractNewZipEntry(zipInputStream, outputFolder, Paths.get(nextEntry.getName()));
                 zipInputStream.closeEntry();
+            }
+
+        }
+    }
+
+    public List<FileProperties> getFilesList() throws Exception {
+        // Проверяем существует ли zip файл
+        if (!Files.isRegularFile(zipFile)) {
+            throw new WrongZipFileException();
+        }
+
+        List<FileProperties> files = new ArrayList<>();
+
+        try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile))) {
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+
+            while (zipEntry != null) {
+                // Поля "размер" и "сжатый размер" не известны, пока элемент не будет прочитан
+                // Давайте вычитаем его в какой-то выходной поток
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                copyData(zipInputStream, baos);
+
+                FileProperties file = new FileProperties(zipEntry.getName(), zipEntry.getSize(), zipEntry.getCompressedSize(), zipEntry.getMethod());
+                files.add(file);
+                zipEntry = zipInputStream.getNextEntry();
             }
         }
 
-        return filePropertiesList;
+        return files;
     }
 
     private void addNewZipEntry(ZipOutputStream zipOutputStream, Path filePath, Path fileName) throws Exception {
@@ -87,6 +110,15 @@ public class ZipFileManager {
             copyData(inputStream, zipOutputStream);
 
             zipOutputStream.closeEntry();
+        }
+    }
+
+    private void extractNewZipEntry(ZipInputStream zipInputStream, Path filePath, Path fileName) throws Exception {
+        Path fullPath = filePath.resolve(fileName);
+        if (!fileName.equals(fileName.getFileName()))
+            Files.createDirectories(fullPath.getParent());
+        try (OutputStream outputStream = Files.newOutputStream(fullPath)) {
+            copyData(zipInputStream, outputStream);
         }
     }
 
