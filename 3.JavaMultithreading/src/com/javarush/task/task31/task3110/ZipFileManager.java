@@ -4,13 +4,14 @@ import com.javarush.task.task31.task3110.exception.PathIsNotFoundException;
 import com.javarush.task.task31.task3110.exception.WrongZipFileException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -56,22 +57,65 @@ public class ZipFileManager {
     }
 
     public void extractAll(Path outputFolder) throws Exception {
-        if (!Files.isRegularFile(zipFile))
+        // Проверяем существует ли zip файл
+        if (!Files.isRegularFile(zipFile)) {
             throw new WrongZipFileException();
-
-        if (Files.notExists(outputFolder))
-            Files.createDirectories(outputFolder);
+        }
 
         try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile))) {
+            // Создаем директорию вывода, если она не существует
+            if (Files.notExists(outputFolder))
+                Files.createDirectories(outputFolder);
 
-            ZipEntry nextEntry;
+            // Проходимся по содержимому zip потока (файла)
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
 
-            while ((nextEntry = zipInputStream.getNextEntry()) != null) {
-                extractNewZipEntry(zipInputStream, outputFolder, Paths.get(nextEntry.getName()));
+            while (zipEntry != null) {
+                String fileName = zipEntry.getName();
+                Path fileFullName = outputFolder.resolve(fileName);
+
+                // Создаем необходимые директории
+                Path parent = fileFullName.getParent();
+                if (Files.notExists(parent))
+                    Files.createDirectories(parent);
+
+                try (OutputStream outputStream = Files.newOutputStream(fileFullName)) {
+                    copyData(zipInputStream, outputStream);
+                }
+                zipEntry = zipInputStream.getNextEntry();
+            }
+        }
+    }
+
+    public void removeFiles(List<Path> pathList) throws Exception {
+        if (!Files.isRegularFile(zipFile)) {
+            throw new WrongZipFileException();
+        }
+
+        Path tempZipFile = Files.createTempFile("tmp", "zip");
+
+        try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(zipFile));
+             ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(tempZipFile))) {
+            ZipEntry zipEntry;
+
+            while ( (zipEntry = zipInputStream.getNextEntry()) != null ) {
+                Path entryPath = Paths.get(zipEntry.getName());
+                if (pathList.contains(entryPath)) {
+                    ConsoleHelper.writeMessage(String.format("Файл %s был удален из архива", entryPath));
+                } else {
+                    zipOutputStream.putNextEntry(zipEntry);
+                    copyData(zipInputStream, zipOutputStream);
+                }
                 zipInputStream.closeEntry();
             }
 
         }
+
+        Files.move(tempZipFile, zipFile, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    public void removeFile(Path path) throws Exception {
+        removeFiles(Collections.singletonList(path));
     }
 
     public List<FileProperties> getFilesList() throws Exception {
@@ -110,15 +154,6 @@ public class ZipFileManager {
             copyData(inputStream, zipOutputStream);
 
             zipOutputStream.closeEntry();
-        }
-    }
-
-    private void extractNewZipEntry(ZipInputStream zipInputStream, Path filePath, Path fileName) throws Exception {
-        Path fullPath = filePath.resolve(fileName);
-        if (!fileName.equals(fileName.getFileName()))
-            Files.createDirectories(fullPath.getParent());
-        try (OutputStream outputStream = Files.newOutputStream(fullPath)) {
-            copyData(zipInputStream, outputStream);
         }
     }
 
