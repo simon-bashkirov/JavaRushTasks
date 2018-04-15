@@ -27,3 +27,4 @@ JavaRushPlugin.properties*
 .idea/workspace.xml*
 /patch.diff
 /out.log*
+/.idea/sonarlint/

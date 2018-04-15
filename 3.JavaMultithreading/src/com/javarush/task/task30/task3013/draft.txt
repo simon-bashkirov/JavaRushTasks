@@ -1,0 +1,20 @@
+        /*System.out.println(Integer.toString(3456, 2));
+        System.out.println(Integer.toString(-3456, 2));
+        System.out.println(Integer.toString(3456/2, 2));
+        System.out.println(Integer.parseInt("11111111111", 2));*/
+//        int a = 1027 >> 1;
+//        System.out.println(a);
+//        System.out.println(Integer.toBinaryString(107));
+        System.out.println(Integer.toBinaryString(~3));
+
+        /*int x = 255;
+        System.out.println("x = " + x);
+        System.out.println("~x = " + ~x);
+        System.out.println("(x | (~x)) = " + (x | (~x)));
+        System.out.println("((x | (~x))+1) = " + ((x | (~x))+1));
+        System.out.println("(((x | (~x))+1)>>2) = " + (((x | (~x))+1)>>2));
+        System.out.println("(x&(((x | (~x))+1)>>2)) = " + (x&(((x | (~x))+1)>>2)));*/
+
+        int x = 3456;
+        int a = (((x | (x << 1))+1)>>2);
+        System.out.println(a);

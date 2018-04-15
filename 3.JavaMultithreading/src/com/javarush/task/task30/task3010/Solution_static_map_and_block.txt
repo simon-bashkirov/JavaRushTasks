@@ -1,0 +1,49 @@
+package com.javarush.task.task30.task3010;
+
+/*
+Минимальное допустимое основание системы счисления
+*/
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Solution {
+    private static final Map<Character, Integer> baseTenValues = new HashMap<>();
+
+    static {
+        for (int i = 48; i <= 57; i++) {
+            baseTenValues.put((char)i, i - 48);
+        }
+        for (int i = 65; i <= 90; i++) {
+            baseTenValues.put((char)i, i - 65 + 10);
+        }
+        for (int i = 97; i <= 122; i++) {
+            baseTenValues.put((char)i, i - 97 + 10);
+        }
+    }
+
+    public static void main(String[] args) {
+//        System.out.println(baseTenValues.get('Z'));
+//        args = new String[1];
+//        String s = args[0] = "12AS08Z/";
+        try {
+            System.out.println(getMinPossibleRadix(args[0]));
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static String getMinPossibleRadix(String number) {
+        int minRadix = 2;
+        char[] chars = number.toCharArray();
+        for (char aChar : chars) {
+            if (Character.isLetterOrDigit(aChar)) {
+                minRadix = (baseTenValues.get(aChar) + 1) > minRadix ?  (baseTenValues.get(aChar) + 1) : minRadix;
+            } else {
+                return "incorrect";
+            }
+        }
+
+        return String.valueOf(minRadix);
+    }
+}
