@@ -8,6 +8,10 @@ public class Controller {
     private HTMLDocument document;
     private File currentFile;
 
+    public Controller(View view) {
+        this.view = view;
+    }
+
     public static void main(String[] args) {
         View view = new View();
         Controller controller = new Controller(view);
@@ -24,7 +28,4 @@ public class Controller {
         System.exit(0);
     }
 
-    public Controller(View view) {
-        this.view = view;
-    }
 }
