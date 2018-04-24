@@ -28,7 +28,7 @@ public class Controller {
     }
 
     public void init() {
-
+        createNewDocument();
     }
 
     // выход
@@ -76,5 +76,36 @@ public class Controller {
         return stringWriter.toString();
     }
 
+    // Новый документ
+    public void createNewDocument() {
+        view.selectHtmlTab();
+        resetDocument();
+        view.setTitle("HTML редактор");
+        view.resetUndo();
+        currentFile = null;
+    }
+
+    public void openDocument() {
+
+    }
+
+    public void saveDocument() {
+    }
+
+    public void saveDocumentAs() {
+        view.selectHtmlTab();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new HTMLFileFilter());
+        int returnVal = fileChooser.showSaveDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            currentFile = fileChooser.getSelectedFile();
+            view.setTitle(currentFile.getName());
+            try (FileWriter fileWriter = new FileWriter(currentFile)) {
+                new HTMLEditorKit().write(fileWriter, document, 0, document.getLength());
+            } catch (Exception e) {
+                ExceptionHandler.log(e);
+            }
+        }
+    }
 
 }
