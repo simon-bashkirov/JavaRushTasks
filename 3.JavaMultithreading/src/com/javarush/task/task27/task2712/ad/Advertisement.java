@@ -14,7 +14,10 @@ public class Advertisement {
         this.initialAmount = initialAmount;
         this.hits = hits;
         this.duration = duration;
-        amountPerOneDisplaying = initialAmount / hits;
+        if (hits > 0)
+            amountPerOneDisplaying = initialAmount / hits;
+        else
+            amountPerOneDisplaying = 0;
     }
 
     public String getName() {
@@ -25,13 +28,33 @@ public class Advertisement {
         return duration;
     }
 
+    public int getHits() {
+        return hits;
+    }
+
     public long getAmountPerOneDisplaying() {
         return amountPerOneDisplaying;
+    }
+
+    public long getAmountPerOneSec() {
+        return (getAmountPerOneDisplaying() * 1000) / getDuration();
     }
 
     public void revalidate() {
         if (hits <= 0)
             throw new UnsupportedOperationException();
         hits--;
+    }
+
+    @Override
+    public String toString() {
+        return "Advertisement{" +
+//                "content=" + content +
+                ", name='" + name + '\'' +
+//                ", initialAmount=" + initialAmount +
+//                ", hits=" + hits +
+                ", duration=" + duration +
+                ", amountPerOneDisplaying=" + amountPerOneDisplaying +
+                '}';
     }
 }
