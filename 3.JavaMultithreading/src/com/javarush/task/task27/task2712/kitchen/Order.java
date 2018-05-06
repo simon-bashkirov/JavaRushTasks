@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Order {
     private final Tablet tablet;
-    protected List<Dish> dishes;
+    private List<Dish> dishes;
 
     public Order(Tablet tablet) throws Exception {
         this.tablet = tablet;
@@ -22,6 +22,10 @@ public class Order {
         }
         return totalCookingTime;
 //        return dishes.stream().mapToInt((s)->s.getDuration()).sum();
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
     }
 
     public boolean isEmpty() {

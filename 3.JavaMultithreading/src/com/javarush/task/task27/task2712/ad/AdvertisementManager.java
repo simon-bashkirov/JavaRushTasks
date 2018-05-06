@@ -1,6 +1,8 @@
 package com.javarush.task.task27.task2712.ad;
 
 import com.javarush.task.task27.task2712.ConsoleHelper;
+import com.javarush.task.task27.task2712.statistic.StatisticManager;
+import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataRow;
 
 import java.util.*;
 
@@ -17,8 +19,11 @@ public class AdvertisementManager {
         List<Advertisement> advertisements = storage.list();
         if (advertisements.isEmpty())
             throw new NoVideoAvailableException();
-        List<Advertisement> chosenAds = chooseAds(timeSeconds, advertisements.size(), advertisements).getAdvertisements();
-        chosenAds.sort(new Comparator<Advertisement>() {
+
+        AdvertisementCollection optimalCollection = chooseAds(timeSeconds, advertisements.size(), advertisements);
+        List<Advertisement> optimalVideoSet = optimalCollection.getCollection();
+
+        optimalVideoSet.sort(new Comparator<Advertisement>() {
             @Override
             public int compare(Advertisement o1, Advertisement o2) {
                 int compare = -Long.compare(o1.getAmountPerOneDisplaying(), o2.getAmountPerOneDisplaying());
@@ -26,21 +31,24 @@ public class AdvertisementManager {
             }
 
         });
-        for (Advertisement advertisement : chosenAds) {
+
+        StatisticManager.getInstance().register(new VideoSelectedEventDataRow(optimalVideoSet, optimalCollection.getTotalPrice(), optimalCollection.getTotalDuration()));
+
+        for (Advertisement advertisement : optimalVideoSet) {
             ConsoleHelper.writeMessage(advertisement.getName() + " is displaying... " + advertisement.getAmountPerOneDisplaying() + ", " + advertisement.getAmountPerOneSec());
             advertisement.revalidate();
         }
     }
 
-    private AdvertisementHolder chooseAds(int timeSeconds, int n, List<Advertisement> advertisements) {
+    private AdvertisementCollection chooseAds(int timeSeconds, int n, List<Advertisement> advertisements) {
         if (n == 0 || timeSeconds == 0)
-            return new AdvertisementHolder();
+            return new AdvertisementCollection();
         else {
             Advertisement advertisement = advertisements.get(n - 1);
             if (advertisement.getDuration() > timeSeconds || advertisement.getHits() <= 0)
                 return chooseAds(timeSeconds, n-1, advertisements);
             else {
-                return adComparator.max(new AdvertisementHolder(advertisement).append(chooseAds(timeSeconds- advertisement.getDuration(), n-1, advertisements)),
+                return adComparator.max(new AdvertisementCollection(advertisement).append(chooseAds(timeSeconds- advertisement.getDuration(), n-1, advertisements)),
                         chooseAds(timeSeconds, n-1, advertisements)
                 );
             }
