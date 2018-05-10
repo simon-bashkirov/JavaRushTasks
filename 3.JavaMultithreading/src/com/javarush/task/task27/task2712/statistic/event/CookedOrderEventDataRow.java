@@ -16,7 +16,7 @@ public class CookedOrderEventDataRow implements EventDataRow {
         this.tabletName = tabletName;
         this.cookName = cookName;
         this.cookingTimeSeconds = cookingTimeSeconds;
-        this.cookingDishes = this.cookingDishes;
+        this.cookingDishes = cookingDishes;
         currentDate = new Date();
     }
 
@@ -33,5 +33,9 @@ public class CookedOrderEventDataRow implements EventDataRow {
     @Override
     public int getTime() {
         return cookingTimeSeconds;
+    }
+
+    public String getCookName() {
+        return cookName;
     }
 }
