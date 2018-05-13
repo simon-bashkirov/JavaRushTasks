@@ -46,4 +46,8 @@ public class ConsoleHelper {
         }
         return dishes;
     }
+
+    public static void reInit() {
+        bis = new BufferedReader(new InputStreamReader(System.in));
+    }
 }

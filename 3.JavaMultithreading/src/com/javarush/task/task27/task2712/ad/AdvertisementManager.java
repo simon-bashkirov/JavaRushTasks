@@ -7,16 +7,16 @@ import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataR
 import java.util.*;
 
 public class AdvertisementManager {
-    private final AdvertisementStorage storage = AdvertisementStorage.getInstance();
-    int timeSeconds;
-    private AdComparator adComparator = new AdComparator();
+    private final AdvertisementStorage advertisementStorage = AdvertisementStorage.getInstance();
+    private int timeSeconds;
+    private AdCollectionComparator adCollectionComparator = new AdCollectionComparator();
 
     public AdvertisementManager(int timeSeconds) {
         this.timeSeconds = timeSeconds;
     }
 
     public void processVideos() {
-        List<Advertisement> advertisements = storage.list();
+        List<Advertisement> advertisements = advertisementStorage.list();
         if (advertisements.isEmpty())
             throw new NoVideoAvailableException();
 
@@ -48,7 +48,7 @@ public class AdvertisementManager {
             if (advertisement.getDuration() > timeSeconds || advertisement.getHits() <= 0)
                 return chooseAds(timeSeconds, n-1, advertisements);
             else {
-                return adComparator.max(new AdvertisementCollection(advertisement).append(chooseAds(timeSeconds- advertisement.getDuration(), n-1, advertisements)),
+                return adCollectionComparator.max(new AdvertisementCollection(advertisement).append(chooseAds(timeSeconds- advertisement.getDuration(), n-1, advertisements)),
                         chooseAds(timeSeconds, n-1, advertisements)
                 );
             }

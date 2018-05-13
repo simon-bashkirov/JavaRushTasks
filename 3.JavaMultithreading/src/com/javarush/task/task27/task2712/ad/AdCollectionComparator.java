@@ -3,7 +3,7 @@ package com.javarush.task.task27.task2712.ad;
 import java.util.Comparator;
 import java.util.List;
 
-class AdComparator implements Comparator<AdvertisementCollection> {
+class AdCollectionComparator implements Comparator<AdvertisementCollection> {
     private Comparator<AdvertisementCollection> compareByTotalPrice = new Comparator<AdvertisementCollection>() {
         @Override
         public int compare(AdvertisementCollection o1, AdvertisementCollection o2) {

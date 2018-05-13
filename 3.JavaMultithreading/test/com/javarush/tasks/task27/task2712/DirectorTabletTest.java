@@ -1,10 +1,13 @@
 package com.javarush.tasks.task27.task2712;
 
+import com.javarush.task.task27.task2712.ConsoleHelper;
 import com.javarush.task.task27.task2712.DirectorTablet;
 import com.javarush.task.task27.task2712.Tablet;
 import com.javarush.task.task27.task2712.ad.Advertisement;
+import com.javarush.task.task27.task2712.ad.AdvertisementStorage;
 import com.javarush.task.task27.task2712.kitchen.Cook;
 import com.javarush.task.task27.task2712.kitchen.Dish;
+import com.javarush.task.task27.task2712.kitchen.Order;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.CookedOrderEventDataRow;
 import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataRow;
@@ -16,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Restaurant16 {
+public class DirectorTabletTest {
 
     public static void main(String[] args) throws Exception {
-        test2();
+        test4();
     }
     
     public static void test1() throws Exception {
@@ -54,7 +57,6 @@ public class Restaurant16 {
         }
 
         DirectorTablet directorTablet = new DirectorTablet();
-        directorTablet.printActiveVideoSet();
         directorTablet.printAdvertisementProfit();
     }
 
@@ -104,5 +106,33 @@ public class Restaurant16 {
 
         DirectorTablet directorTablet = new DirectorTablet();
         directorTablet.printCookWorkloading();
+    }
+
+    public static void test3() {
+        DirectorTablet directorTablet = new DirectorTablet();
+        directorTablet.printActiveVideoSet();
+    }
+
+    public static void test4() {
+        DirectorTablet directorTablet = new DirectorTablet();
+        ConsoleHelper.writeMessage("ActiveVideoSet:");
+        directorTablet.printActiveVideoSet();
+        ConsoleHelper.writeMessage("ArchivedVideoSet:");
+        directorTablet.printArchivedVideoSet();
+        ConsoleHelper.writeMessage("");
+
+
+        Tablet tablet = new Tablet(5);
+
+        for (int i = 0; i < 50; i++) {
+            Order randomOrder = OrderCreator.createRandomOrder(tablet);
+            ConsoleHelper.writeMessage(randomOrder.toString());
+        }
+
+        ConsoleHelper.writeMessage("ActiveVideoSet:");
+        directorTablet.printActiveVideoSet();
+        ConsoleHelper.writeMessage("ArchivedVideoSet:");
+        directorTablet.printArchivedVideoSet();
+        ConsoleHelper.writeMessage("");
     }
 }
