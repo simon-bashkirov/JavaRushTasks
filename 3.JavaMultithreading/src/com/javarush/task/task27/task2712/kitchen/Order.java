@@ -8,11 +8,11 @@ import java.util.List;
 
 public class Order {
     private final Tablet tablet;
-    private List<Dish> dishes;
+    protected List<Dish> dishes;
 
     public Order(Tablet tablet) throws Exception {
         this.tablet = tablet;
-        dishes = ConsoleHelper.getAllDishesForOrder();
+        initDishes();
     }
 
     public int getTotalCookingTime() {
@@ -22,6 +22,10 @@ public class Order {
         }
         return totalCookingTime;
 //        return dishes.stream().mapToInt((s)->s.getDuration()).sum();
+    }
+
+    protected void initDishes() throws Exception {
+        dishes = ConsoleHelper.getAllDishesForOrder();
     }
 
     public List<Dish> getDishes() {
