@@ -13,13 +13,12 @@ public class RandomOrderGeneratorTask implements Runnable {
 
     @Override
     public void run() {
-        Tablet tablet = tablets.get((int) (Math.random() * 2));
         while (!Thread.currentThread().isInterrupted()) {
+            Tablet tablet = tablets.get((int) (Math.random() * tablets.size()));
             tablet.createTestOrder();
             try {
                 Thread.sleep(interval);
             } catch (InterruptedException e) {
-                e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
         }

@@ -31,6 +31,10 @@ public class StatisticManager {
         cooks.add(cook);
     }
 
+    public Set<Cook> getCooks() {
+        return cooks;
+    }
+
     public Map<DateHolder, Long> getAdvertisementProfit() {
         List<EventDataRow> videoSelectedEvents = statisticStorage.getEventsOfType(EventType.SELECTED_VIDEOS);
         Map<DateHolder, Long> profitPerDayMap = new HashMap<>();

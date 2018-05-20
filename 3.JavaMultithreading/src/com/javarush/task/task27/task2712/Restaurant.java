@@ -28,21 +28,20 @@ public class Restaurant {
             Tablet tablet = new Tablet(i);
             tablets.add(tablet);
             tablet.addObserver(orderManager);
-            tablet.addObserver(orderManager);
         }
 
         RandomOrderGeneratorTask randomOrderGeneratorTask = new RandomOrderGeneratorTask(tablets, ORDER_CREATING_INTERVAL);
-        Thread t = new Thread(randomOrderGeneratorTask);
-        t.start();
+        Thread thread = new Thread(randomOrderGeneratorTask);
+        thread.start();
 
         Thread.sleep(1000);
-        t.interrupt();
+        thread.interrupt();
 
-        DirectorTablet directorTablet = new DirectorTablet();
+        /*DirectorTablet directorTablet = new DirectorTablet();
         directorTablet.printActiveVideoSet();
         directorTablet.printAdvertisementProfit();
         directorTablet.printArchivedVideoSet();
-        directorTablet.printCookWorkloading();
+        directorTablet.printCookWorkloading();*/
     }
 
 }

@@ -19,6 +19,8 @@ public class DirectorTablet {
     };
 
     public void printAdvertisementProfit() {
+        ConsoleHelper.writeMessage("AdvertisementProfit:");
+
         NavigableMap<DateHolder, Long> profitPerDayMap = new TreeMap<>(statisticManager.getAdvertisementProfit()).descendingMap();
         double totalProfit = 0;
 
@@ -34,6 +36,8 @@ public class DirectorTablet {
     }
 
     public void printCookWorkloading() {
+        ConsoleHelper.writeMessage("CookWorkloading");
+
         NavigableMap<DateHolder, Map<String, Integer>> workloadMap = new TreeMap<>(statisticManager.getWorkload()).descendingMap();
 
         for (Map.Entry<DateHolder, Map<String, Integer>> entryDateMap : workloadMap.entrySet()) {
@@ -52,6 +56,8 @@ public class DirectorTablet {
     }
 
     public void printActiveVideoSet() {
+        ConsoleHelper.writeMessage("ActiveVideoSet");
+
         List<Advertisement> activeVideoSet = statisticAdvertisementManager.getActiveVideoSet();
         Collections.sort(activeVideoSet, adNameComparator);
         for (Advertisement advertisement : activeVideoSet) {
@@ -60,6 +66,8 @@ public class DirectorTablet {
     }
 
     public void printArchivedVideoSet() {
+        ConsoleHelper.writeMessage("ArchivedVideoSet");
+
         List<Advertisement> archivedVideoSet = statisticAdvertisementManager.getArchivedVideoSet();
         Collections.sort(archivedVideoSet, adNameComparator);
         for (Advertisement advertisement : archivedVideoSet) {

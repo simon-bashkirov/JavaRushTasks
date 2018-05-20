@@ -10,9 +10,12 @@ public class AdvertisementManager {
     private final AdvertisementStorage advertisementStorage = AdvertisementStorage.getInstance();
     private int timeSeconds;
     private AdCollectionComparator adCollectionComparator = new AdCollectionComparator();
+    private String tabletName;
 
-    public AdvertisementManager(int timeSeconds) {
+    public AdvertisementManager(int timeSeconds, String tabletName) {
         this.timeSeconds = timeSeconds;
+        this.tabletName = tabletName;
+
     }
 
     public void processVideos() {
@@ -34,9 +37,15 @@ public class AdvertisementManager {
 
         StatisticManager.getInstance().register(new VideoSelectedEventDataRow(optimalVideoSet, optimalCollection.getTotalPrice(), optimalCollection.getTotalDuration()));
 
-        for (Advertisement advertisement : optimalVideoSet) {
-            ConsoleHelper.writeMessage(advertisement.getName() + " is displaying... " + advertisement.getAmountPerOneDisplaying() + ", " + advertisement.getAmountPerOneSec());
-            advertisement.revalidate();
+        for (Advertisement ad : optimalVideoSet) {
+            ConsoleHelper.writeMessage(String.format("%s: %s is displaying... %d, %d", tabletName, ad.getName(), ad.getAmountPerOneDisplaying(), ad.getAmountPerOneSec()));
+            ad.revalidate();
+
+            /*try {
+                Thread.sleep(ad.getDuration() / 60 * 10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }*/
         }
     }
 

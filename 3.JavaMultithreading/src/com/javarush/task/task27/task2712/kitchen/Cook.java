@@ -11,16 +11,30 @@ import java.util.Observer;
 
 public class Cook extends Observable {
     private String name;
+    private volatile boolean busy;
 
     public Cook(String name) {
         this.name = name;
     }
 
-    public void startCookingOrder(Order order) {
+    public synchronized void startCookingOrder(Order order) {
+        busy = true;
         ConsoleHelper.writeMessage(String.format("Start cooking - %s, cooking time %dmin", order, order.getTotalCookingTime()));
         StatisticManager.getInstance().register(new CookedOrderEventDataRow(order.getTablet().toString(), name, order.getTotalCookingTime() * 60, order.getDishes()));
+
+        try {
+            Thread.sleep(order.getTotalCookingTime() * 10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         setChanged();
         notifyObservers(order);
+        busy = false;
+    }
+
+    public boolean isBusy() {
+        return busy;
     }
 
     @Override

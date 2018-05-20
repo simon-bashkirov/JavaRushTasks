@@ -26,7 +26,7 @@ public class Tablet extends Observable {
                 setChanged();
                 notifyObservers(order);
             }
-            AdvertisementManager advertisementManager = new AdvertisementManager(order.getTotalCookingTime() * 60);
+            AdvertisementManager advertisementManager = new AdvertisementManager(order.getTotalCookingTime() * 60, toString());
             advertisementManager.processVideos();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
