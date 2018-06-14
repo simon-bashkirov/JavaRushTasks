@@ -27,6 +27,9 @@ public class Solution {
             if (Character.isLetterOrDigit(aChar)) {
                 Integer i = baseTenValues.get(aChar);
 //                minRadix = (baseTenValues.get(aChar) + 1) > minRadix ?  (baseTenValues.get(aChar) + 1) : minRadix;
+                /*
+                i +1 because if z = 35, then max radix is 36 (35 + 1)
+                 */
                 if (i != null && i + 1 > minRadix) {
                     minRadix = i + 1;
                 } else {
