@@ -43,4 +43,11 @@ public class Tile {
         Integer color = tileColors.get(value);
         return new Color(color != null ? color : 0xff0000);
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "value=" + value +
+                '}';
+    }
 }
