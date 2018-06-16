@@ -3,6 +3,7 @@ package com.javarush.task.task35.task3513;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Tile {
     int value;
@@ -31,6 +32,10 @@ public class Tile {
         this.value = value;
     }
 
+    public Tile(Tile tile) {
+        value = tile.value;
+    }
+
     public boolean isEmpty() {
         return value == 0;
     }
@@ -50,4 +55,19 @@ public class Tile {
                 "value=" + value +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return value == tile.value;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(value);
+    }
+
 }
