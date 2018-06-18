@@ -1,5 +1,7 @@
 package com.javarush.task.task35.task3513;
 
+import com.javarush.task.task35.task3513.utils.ArrayOperations;
+
 import java.io.StringReader;
 import java.lang.reflect.Field;
 
@@ -13,8 +15,8 @@ public class ModelManualTest {
 
         printTiles(tiles);
 
-        System.out.println("Running right()");
-        model.right();
+        System.out.println("Moving tiles");
+        model.down();
         printTiles(tiles);
         /*System.out.println("Running right()");
         model.right();

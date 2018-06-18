@@ -1,5 +1,7 @@
 package com.javarush.task.task35.task3513;
 
+import com.javarush.task.task35.task3513.utils.ArrayOperations;
+
 import java.util.*;
 
 public class Model {
@@ -52,19 +54,17 @@ public class Model {
                 emptyTileCnt++;
         }
 
-        if (emptyTileCnt == tiles.length)
+        if (emptyTileCnt == tiles.length || emptyTileCnt == 0)
             return isChanged;
-
-        Tile[] initialState = new Tile[tiles.length];
-        for (int i = 0; i < tiles.length; i++) {
-            initialState[i] = new Tile(tiles[i].value);
-        }
 
         int i = 0;
         while (emptyTileCnt > 0) {
             if (tiles[i].isEmpty()) {
                 for (int j = i; j < tiles.length-1; j++) {
-                    tiles[j].value = tiles[j+1].value;
+                    if (tiles[j+1].value != 0) {
+                        tiles[j].value = tiles[j+1].value;
+                        isChanged = true;
+                    }
                 }
                 tiles[tiles.length-1].value = 0;
                 emptyTileCnt--;
@@ -73,15 +73,11 @@ public class Model {
                 i++;
         }
 
-        isChanged = !Arrays.equals(initialState, tiles);
         return isChanged;
     }
 
     private boolean mergeTiles(Tile[] tiles) {
-        Tile[] initialState = new Tile[tiles.length];
-        for (int i = 0; i < tiles.length; i++) {
-            initialState[i] = new Tile(tiles[i].value);
-        }
+        boolean isChanged = false;
 
         for (int i = 0; i < tiles.length-1; i++) { //cntOfMerges = 0; cntOfMerges < 2 &&
             Tile currentTile = tiles[i];
@@ -98,17 +94,17 @@ public class Model {
                     maxTile = currentTile.value;
 
                 score += currentTile.value;
+                isChanged = true;
             }
         }
 
-        boolean isChanged = !Arrays.equals(initialState, tiles);
         return isChanged;
     }
 
     void left() {
         boolean isChanged = false;
-        for (Tile[] gameTile : gameTiles) {
-            isChanged |= compressTiles(gameTile) | mergeTiles(gameTile);
+        for (Tile[] tileRow : gameTiles) {
+            isChanged |= compressTiles(tileRow) | mergeTiles(tileRow);
         }
         if(isChanged) {
             addTile();
@@ -117,11 +113,8 @@ public class Model {
 
     void right() {
         boolean isChanged = false;
-        for (Tile[] gameTile : gameTiles) {
-            Tile[] reversedGameTile = reverseRow(gameTile);
-            isChanged |= compressTiles(reversedGameTile) | mergeTiles(reversedGameTile);
-            System.out.println("reversedGameTile " + Arrays.toString(reversedGameTile));
-            System.out.println("gameTile " + Arrays.toString(gameTile));
+        for (Tile[] tileRow : ArrayOperations.flipMatrixHorizontally(gameTiles)) {
+            isChanged |= compressTiles(tileRow) | mergeTiles(tileRow);
         }
         if(isChanged) {
             addTile();
@@ -129,19 +122,23 @@ public class Model {
     }
 
     void up() {
-
+        boolean isChanged = false;
+        for (Tile[] tileRow : ArrayOperations.transposeMatrix(gameTiles)) {
+            isChanged |= compressTiles(tileRow) | mergeTiles(tileRow);
+        }
+        if(isChanged) {
+            addTile();
+        }
     }
 
     void down() {
-
+        boolean isChanged = false;
+        for (Tile[] tileRow : ArrayOperations.flipMatrixHorizontally(ArrayOperations.transposeMatrix(gameTiles))) {
+            isChanged |= compressTiles(tileRow) | mergeTiles(tileRow);
+        }
+        if(isChanged) {
+            addTile();
+        }
     }
 
-    private Tile[] reverseRow(Tile[] gameTile) {
-        List<Tile> tiles = Arrays.asList(gameTile);
-//        List<Tile> tiles = new LinkedList<>(Arrays.asList(gameTile));
-        Collections.reverse(tiles);
-        System.out.println(Arrays.toString(gameTile));
-        System.out.println(Arrays.toString(tiles.toArray()));
-        return (Tile[]) tiles.toArray();
-    }
 }
