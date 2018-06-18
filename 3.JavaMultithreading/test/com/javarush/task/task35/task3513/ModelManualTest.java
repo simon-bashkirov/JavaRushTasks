@@ -9,16 +9,16 @@ public class ModelManualTest {
     public static void main(String[] args) {
         Tile[][] tiles = generateTiles();
 
-        model.setGameTiles(tiles);
+        setTiles(tiles);
 
         printTiles(tiles);
 
-        System.out.println("Running left()");
-        model.left();
+        System.out.println("Running right()");
+        model.right();
         printTiles(tiles);
-        System.out.println("Running left()");
-        model.left();
-        printTiles(tiles);
+        /*System.out.println("Running right()");
+        model.right();
+        printTiles(tiles);*/
     }
 
     public static void printTiles(Tile[][] tiles) {
@@ -32,7 +32,6 @@ public class ModelManualTest {
         }
         for (int i = 0; i < tiles.length; i++) {
             for (int i1 = 0; i1 < tiles.length; i1++) {
-//                System.out.print("[" + tiles[i][i1].value + "]");
                 System.out.print(String.format("[%" + maxLen + "s]",tiles[i][i1].value));
             }
             System.out.println();
@@ -42,7 +41,7 @@ public class ModelManualTest {
     public static void setTiles(Tile[][] tiles) {
         Field date1;
         try {
-            date1 = model.getClass().getSuperclass().getDeclaredField("gameTiles");
+            date1 = model.getClass().getDeclaredField("gameTiles");
             date1.setAccessible(true);
             date1.set(model, tiles);
         } catch (Exception e) {
@@ -51,18 +50,18 @@ public class ModelManualTest {
     }
 
     public static Tile[][] generateTiles() {
-        /*Integer[][] tileValues = {
-                {2,8,2,2},
-                {16,2,8,0},
-                {32,16,4,2},
-                {16,8,4,2}
-        };*/
         Integer[][] tileValues = {
+                {2, 2, 2, 2},
+                {2, 2, 8, 0},
+                {0, 4, 4, 2},
+                {0, 0, 0, 0}
+        };
+        /*Integer[][] tileValues = {
                 {2,0,0,0},
                 {2,0,0,0},
                 {0,0,0,0},
                 {0,0,0,0}
-        };
+        };*/
 
         Tile[][] tiles = new Tile[4][4];
 

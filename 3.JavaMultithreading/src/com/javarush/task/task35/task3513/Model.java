@@ -12,18 +12,6 @@ public class Model {
         resetGameTiles();
     }
 
-    public static void main(String[] args) {
-        Model model = new Model();
-        Tile[] tiles = {new Tile(2), new Tile(0), new Tile(2), new Tile(2)};
-        boolean isChanged = false;
-//        Tile[] tiles = {new Tile(2), new Tile(2), new Tile(2), new Tile(8)};
-        System.out.println("Before compression: " + Arrays.toString(tiles));
-        isChanged = model.compressTiles(tiles);
-        System.out.println("After compression: " + Arrays.toString(tiles) + ",\n\t isChanged = " + isChanged);
-        isChanged = model.mergeTiles(tiles);
-        System.out.println("After merge: " + Arrays.toString(tiles) + ",\n\t isChanged = " + isChanged);
-    }
-
     private void addTile() {
         List<Tile> emptyTiles = getEmptyTiles();
         if (!emptyTiles.isEmpty())
@@ -52,34 +40,40 @@ public class Model {
         for (int i = 0; i < 2; i++) {
             addTile();
         }
+        score = 0;
     }
 
     private boolean compressTiles(Tile[] tiles) {
+        boolean isChanged = false;
+
+        int emptyTileCnt = 0;
+        for (Tile tile : tiles) {
+            if (tile.isEmpty())
+                emptyTileCnt++;
+        }
+
+        if (emptyTileCnt == tiles.length)
+            return isChanged;
+
         Tile[] initialState = new Tile[tiles.length];
         for (int i = 0; i < tiles.length; i++) {
             initialState[i] = new Tile(tiles[i].value);
         }
 
-        int countOfZeros = 0;
-        for (Tile tile : tiles) {
-            if (tile.isEmpty())
-                countOfZeros++;
-        }
-
         int i = 0;
-        while (countOfZeros > 0) {
+        while (emptyTileCnt > 0) {
             if (tiles[i].isEmpty()) {
                 for (int j = i; j < tiles.length-1; j++) {
                     tiles[j].value = tiles[j+1].value;
                 }
                 tiles[tiles.length-1].value = 0;
-                countOfZeros--;
+                emptyTileCnt--;
             }
             else
                 i++;
         }
 
-        boolean isChanged = !Arrays.equals(initialState, tiles);
+        isChanged = !Arrays.equals(initialState, tiles);
         return isChanged;
     }
 
@@ -93,7 +87,7 @@ public class Model {
             Tile currentTile = tiles[i];
             Tile nextTile = tiles[i + 1];
 
-            if (currentTile.value == nextTile.value) {
+            if (currentTile.value != 0 && currentTile.value == nextTile.value) {
                 currentTile.value *= 2;
                 for (int j = i + 1; j < tiles.length-1; j++) {
                     tiles[j].value = tiles[j+1].value;
@@ -114,15 +108,40 @@ public class Model {
     void left() {
         boolean isChanged = false;
         for (Tile[] gameTile : gameTiles) {
-            isChanged |= compressTiles(gameTile);
-            isChanged |= mergeTiles(gameTile);
+            isChanged |= compressTiles(gameTile) | mergeTiles(gameTile);
         }
         if(isChanged) {
             addTile();
         }
     }
 
-    public void setGameTiles(Tile[][] gameTiles) {
-        this.gameTiles = gameTiles;
+    void right() {
+        boolean isChanged = false;
+        for (Tile[] gameTile : gameTiles) {
+            Tile[] reversedGameTile = reverseRow(gameTile);
+            isChanged |= compressTiles(reversedGameTile) | mergeTiles(reversedGameTile);
+            System.out.println("reversedGameTile " + Arrays.toString(reversedGameTile));
+            System.out.println("gameTile " + Arrays.toString(gameTile));
+        }
+        if(isChanged) {
+            addTile();
+        }
+    }
+
+    void up() {
+
+    }
+
+    void down() {
+
+    }
+
+    private Tile[] reverseRow(Tile[] gameTile) {
+        List<Tile> tiles = Arrays.asList(gameTile);
+//        List<Tile> tiles = new LinkedList<>(Arrays.asList(gameTile));
+        Collections.reverse(tiles);
+        System.out.println(Arrays.toString(gameTile));
+        System.out.println(Arrays.toString(tiles.toArray()));
+        return (Tile[]) tiles.toArray();
     }
 }
