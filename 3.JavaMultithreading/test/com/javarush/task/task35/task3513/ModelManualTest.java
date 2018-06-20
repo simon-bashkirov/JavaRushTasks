@@ -10,14 +10,18 @@ public class ModelManualTest {
 
     public static void main(String[] args) {
         Tile[][] tiles = generateTiles();
+        printTiles(tiles);
+        tiles = ArrayOperations.rotate(tiles, ArrayOperations.Rotate.CLOCKWISE);
+        System.out.println();
+        printTiles(tiles);
 
-        setTiles(tiles);
+        /*setTiles(tiles);
 
         printTiles(tiles);
 
         System.out.println("Moving tiles");
         model.down();
-        printTiles(tiles);
+        printTiles(tiles);*/
         /*System.out.println("Running right()");
         model.right();
         printTiles(tiles);*/

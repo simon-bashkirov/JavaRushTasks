@@ -13,7 +13,7 @@ class ModelTest {
 
     @Test
     void resetGameTiles() {
-        System.out.println("resetGameTiles()");
+//        System.out.println("resetGameTiles()");
         model.resetGameTiles();
         int sum = 0;
         Tile[][] gameTiles = getGameTiles();
@@ -22,7 +22,7 @@ class ModelTest {
                 sum += gameTiles[i][j].value;
             }
         }
-        System.out.println("expected = " + 4 + ", sum = " + sum);
+//        System.out.println("expected = " + 4 + ", sum = " + sum);
         assertEquals(4, sum);
     }
 
@@ -45,33 +45,85 @@ class ModelTest {
                 {0, 0, 0, 0}
         });
 
-        System.out.println("tiles");
-        printTiles(tiles);
+//        System.out.println("tiles");
+//        printTiles(tiles);
         model.left();
-        System.out.println("tilesUpdated");
-        printTiles(tiles);
+//        System.out.println("tilesUpdated");
+//        printTiles(tiles);
 
         assertTrue(areBoardsEqualAfterMove(tiles, tilesUpdatedExpected));
-
-        /*tiles = generateTiles(new Integer[][]{
-                {0, 0, 0, 0},
-                {2, 0, 0, 0},
-                {2, 0, 0, 0},
-                {0, 0, 0, 0}
-        });*/
-
     }
 
     @Test
     void right() {
+        Tile[][] tiles = null;
+        tiles = generateTiles(new Integer[][]{
+                {2, 2, 2, 2},
+                {2, 2, 8, 0},
+                {0, 4, 4, 2},
+                {0, 0, 0, 0}
+        });
+
+        setGameTiles(tiles);
+
+        Tile[][] tilesUpdatedExpected = generateTiles(new Integer[][]{
+                {0, 0, 4, 4},
+                {0, 0, 4, 8},
+                {0, 0, 8, 2},
+                {0, 0, 0, 0}
+        });
+
+        model.right();
+
+        assertTrue(areBoardsEqualAfterMove(tiles, tilesUpdatedExpected));
     }
 
     @Test
     void up() {
+        Tile[][] tiles = null;
+        tiles = generateTiles(new Integer[][]{
+                {2, 2, 2, 2},
+                {2, 2, 8, 0},
+                {0, 4, 4, 2},
+                {0, 0, 0, 0}
+        });
+
+        setGameTiles(tiles);
+
+        Tile[][] tilesUpdatedExpected = generateTiles(new Integer[][]{
+                {4, 4, 2, 4},
+                {0, 4, 8, 0},
+                {0, 0, 3, 0},
+                {0, 0, 0, 0}
+        });
+
+        model.right();
+
+        assertTrue(areBoardsEqualAfterMove(tiles, tilesUpdatedExpected));
     }
 
     @Test
     void down() {
+        Tile[][] tiles = null;
+        tiles = generateTiles(new Integer[][]{
+                {2, 2, 2, 2},
+                {2, 2, 8, 0},
+                {0, 4, 4, 2},
+                {0, 0, 0, 0}
+        });
+
+        setGameTiles(tiles);
+
+        Tile[][] tilesUpdatedExpected = generateTiles(new Integer[][]{
+                {0, 0, 0, 0},
+                {0, 0, 2, 0},
+                {0, 4, 8, 0},
+                {4, 4, 4, 4}
+        });
+
+        model.right();
+
+        assertTrue(areBoardsEqualAfterMove(tiles, tilesUpdatedExpected));
     }
 
     public void setGameTiles(Tile[][] tiles) {
@@ -133,5 +185,36 @@ class ModelTest {
             }
         }
         return areEqual;
+    }
+
+    @Test
+    void canMove() {
+        Tile[][] tiles = null;
+        tiles = generateTiles(new Integer[][]{
+                {2, 2, 2, 2},
+                {2, 2, 8, 0},
+                {0, 4, 4, 2},
+                {0, 0, 0, 0}
+        });
+        setGameTiles(tiles);
+        assertTrue(model.canMove());
+
+        tiles = generateTiles(new Integer[][]{
+                {2, 4,16, 2},
+                {8, 2, 8, 0},
+                {4, 8, 4, 2},
+                {2, 4, 2, 4}
+        });
+        setGameTiles(tiles);
+        assertTrue(model.canMove());
+
+        tiles = generateTiles(new Integer[][]{
+                {2, 4,16, 2},
+                {8, 2, 8, 4},
+                {4, 8, 4, 2},
+                {2, 4, 2, 4}
+        });
+        setGameTiles(tiles);
+        assertFalse(model.canMove());
     }
 }

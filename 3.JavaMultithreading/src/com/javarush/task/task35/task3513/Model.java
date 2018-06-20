@@ -4,6 +4,9 @@ import com.javarush.task.task35.task3513.utils.ArrayOperations;
 
 import java.util.*;
 
+import static com.javarush.task.task35.task3513.utils.ArrayOperations.Rotate.CLOCKWISE;
+import static com.javarush.task.task35.task3513.utils.ArrayOperations.Rotate.COUNTERCLOCKWISE;
+
 public class Model {
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles;
@@ -112,33 +115,47 @@ public class Model {
     }
 
     void right() {
-        boolean isChanged = false;
-        for (Tile[] tileRow : ArrayOperations.flipMatrixHorizontally(gameTiles)) {
-            isChanged |= compressTiles(tileRow) | mergeTiles(tileRow);
-        }
-        if(isChanged) {
-            addTile();
-        }
+        gameTiles = ArrayOperations.flipHorizontally(gameTiles);
+        left();
+        gameTiles = ArrayOperations.flipHorizontally(gameTiles);
     }
 
     void up() {
-        boolean isChanged = false;
-        for (Tile[] tileRow : ArrayOperations.transposeMatrix(gameTiles)) {
-            isChanged |= compressTiles(tileRow) | mergeTiles(tileRow);
-        }
-        if(isChanged) {
-            addTile();
-        }
+        gameTiles = ArrayOperations.rotate(gameTiles, COUNTERCLOCKWISE);
+        left();
+        gameTiles = ArrayOperations.rotate(gameTiles, CLOCKWISE);
     }
 
     void down() {
-        boolean isChanged = false;
-        for (Tile[] tileRow : ArrayOperations.flipMatrixHorizontally(ArrayOperations.transposeMatrix(gameTiles))) {
-            isChanged |= compressTiles(tileRow) | mergeTiles(tileRow);
-        }
-        if(isChanged) {
-            addTile();
-        }
+        gameTiles = ArrayOperations.rotate(gameTiles, CLOCKWISE);
+        left();
+        gameTiles = ArrayOperations.rotate(gameTiles, COUNTERCLOCKWISE);
     }
 
+    public Tile[][] getGameTiles() {
+        return gameTiles;
+    }
+
+    public boolean canMove() {
+        for (int i = 0; i < gameTiles.length; i++) {
+            for (int j = 0; j < gameTiles.length; j++) {
+                if (gameTiles[i][j].isEmpty())
+                    return true;
+                if (i < gameTiles.length - 1 && j < gameTiles.length - 1) {
+                    if ( (gameTiles[i][j].value == gameTiles[i+1][j].value) || (gameTiles[i][j].value == gameTiles[i][j+1].value) ) {
+                        return true;
+                    }
+                } else if (i == gameTiles.length - 1 && j < gameTiles.length - 1) {
+                    if ( (gameTiles[i][j].value == gameTiles[i][j+1].value) ) {
+                        return true;
+                    }
+                } else if (i < gameTiles.length - 1 && j == gameTiles.length - 1) {
+                    if ( (gameTiles[i][j].value == gameTiles[i+1][j].value) ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
