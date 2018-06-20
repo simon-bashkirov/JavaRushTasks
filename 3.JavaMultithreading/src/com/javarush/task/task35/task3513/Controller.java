@@ -6,6 +6,11 @@ public class Controller extends KeyAdapter {
     private Model model;
     private View view;
 
+    public Controller(Model model) {
+        this.model = model;
+        view = new View(this);
+    }
+
     public Tile[][] getGameTiles() {
         return model.getGameTiles();
     }

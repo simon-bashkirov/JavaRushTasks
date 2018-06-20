@@ -11,7 +11,7 @@ public class ModelManualTest {
     public static void main(String[] args) {
         Tile[][] tiles = generateTiles();
         printTiles(tiles);
-        tiles = ArrayOperations.rotate(tiles, ArrayOperations.Rotate.CLOCKWISE);
+        tiles = ArrayOperations.flipHorizontally(tiles);
         System.out.println();
         printTiles(tiles);
 

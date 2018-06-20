@@ -4,9 +4,6 @@ import com.javarush.task.task35.task3513.utils.ArrayOperations;
 
 import java.util.*;
 
-import static com.javarush.task.task35.task3513.utils.ArrayOperations.Rotate.CLOCKWISE;
-import static com.javarush.task.task35.task3513.utils.ArrayOperations.Rotate.COUNTERCLOCKWISE;
-
 public class Model {
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles;
@@ -121,15 +118,15 @@ public class Model {
     }
 
     void up() {
-        gameTiles = ArrayOperations.rotate(gameTiles, COUNTERCLOCKWISE);
+        gameTiles = ArrayOperations.rotateCounterclockwise(gameTiles);
         left();
-        gameTiles = ArrayOperations.rotate(gameTiles, CLOCKWISE);
+        gameTiles = ArrayOperations.rotateClockwise(gameTiles);
     }
 
     void down() {
-        gameTiles = ArrayOperations.rotate(gameTiles, CLOCKWISE);
+        gameTiles = ArrayOperations.rotateClockwise(gameTiles);
         left();
-        gameTiles = ArrayOperations.rotate(gameTiles, COUNTERCLOCKWISE);
+        gameTiles = ArrayOperations.rotateCounterclockwise(gameTiles);
     }
 
     public Tile[][] getGameTiles() {
