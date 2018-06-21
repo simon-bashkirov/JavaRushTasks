@@ -1,10 +1,9 @@
 package com.javarush.task.task35.task3513;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +12,6 @@ class ModelTest {
 
     @Test
     void resetGameTiles() {
-//        System.out.println("resetGameTiles()");
         model.resetGameTiles();
         int sum = 0;
         Tile[][] gameTiles = getGameTiles();
@@ -22,7 +20,6 @@ class ModelTest {
                 sum += gameTiles[i][j].value;
             }
         }
-//        System.out.println("expected = " + 4 + ", sum = " + sum);
         assertEquals(4, sum);
     }
 
@@ -45,11 +42,7 @@ class ModelTest {
                 {0, 0, 0, 0}
         });
 
-//        System.out.println("tiles");
-//        printTiles(tiles);
         model.left();
-//        System.out.println("tilesUpdated");
-//        printTiles(tiles);
 
         assertTrue(areBoardsEqualAfterMove(tiles, tilesUpdatedExpected));
     }
@@ -126,6 +119,24 @@ class ModelTest {
         assertTrue(areBoardsEqualAfterMove(tiles, tilesUpdatedExpected));
     }
 
+    /*@Test
+    void testcompressTiles() {
+        Method method;
+        int sum1;
+        int sum2;
+        try {
+            method = model.getClass().getDeclaredMethod("compressTiles", new Class[]{Tile.class});
+            method.setAccessible(true);
+            Tile[] tiles = {new Tile(0), new Tile(2), new Tile(0), new Tile(2)};
+            sum1 = getTileSum(tiles);
+            method.invoke(model, tiles);
+            sum2 = getTileSum(tiles);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(sum1, sum2);
+    }*/
+
     public void setGameTiles(Tile[][] tiles) {
         Field gameTiles;
         try {
@@ -185,6 +196,14 @@ class ModelTest {
             }
         }
         return areEqual;
+    }
+
+    public int getTileSum(Tile[] tiles) {
+        int sum = 0;
+        for (Tile tile : tiles) {
+           sum += tile.value;
+        }
+        return sum;
     }
 
     @Test

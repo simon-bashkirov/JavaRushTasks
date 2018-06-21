@@ -10,18 +10,13 @@ public class ModelManualTest {
 
     public static void main(String[] args) {
         Tile[][] tiles = generateTiles();
-        printTiles(tiles);
-        tiles = ArrayOperations.flipHorizontally(tiles);
-        System.out.println();
-        printTiles(tiles);
+//        printTiles(tiles);
 
-        /*setTiles(tiles);
+        setTiles(tiles);
 
-        printTiles(tiles);
-
-        System.out.println("Moving tiles");
-        model.down();
-        printTiles(tiles);*/
+//        System.out.println("Moving left");
+        model.left();
+//        printTiles(tiles);
         /*System.out.println("Running right()");
         model.right();
         printTiles(tiles);*/
@@ -56,18 +51,18 @@ public class ModelManualTest {
     }
 
     public static Tile[][] generateTiles() {
-        Integer[][] tileValues = {
+        /*Integer[][] tileValues = {
                 {2, 2, 2, 2},
                 {2, 2, 8, 0},
                 {0, 4, 4, 2},
                 {0, 0, 0, 0}
-        };
-        /*Integer[][] tileValues = {
-                {2,0,0,0},
-                {2,0,0,0},
+        };*/
+        Integer[][] tileValues = {
+                {0,0,0,0},
+                {0,2,0,2},
                 {0,0,0,0},
                 {0,0,0,0}
-        };*/
+        };
 
         Tile[][] tiles = new Tile[4][4];
 

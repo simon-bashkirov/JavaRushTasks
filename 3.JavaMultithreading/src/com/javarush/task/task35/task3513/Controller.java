@@ -10,6 +10,11 @@ public class Controller extends KeyAdapter {
     private View view;
     private static final int WINNING_TILE = 2048;
 
+    public Controller(Model model) {
+        this.model = model;
+        view = new View(this);
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == VK_ESCAPE)
@@ -41,17 +46,16 @@ public class Controller extends KeyAdapter {
         view.repaint();
     }
 
-    public Controller(Model model) {
-        this.model = model;
-        view = new View(this);
-    }
-
     public Tile[][] getGameTiles() {
         return model.getGameTiles();
     }
 
     public int getScore() {
         return model.score;
+    }
+
+    public View getView() {
+        return view;
     }
 
     public void resetGame() {
