@@ -204,4 +204,17 @@ public class Model {
                 break;
         }
     }
+
+    boolean hasBoardChanged() {
+        return !Arrays.deepEquals(gameTiles, previousStates.peek());
+    }
+
+    MoveEfficiency getMoveEfficiency(Move move) {
+        move.move();
+        MoveEfficiency moveEfficiency = hasBoardChanged() ?
+                new MoveEfficiency(getEmptyTiles().size(), score, move) :
+                new MoveEfficiency(-1, 0, move);
+        rollback();
+        return moveEfficiency;
+    }
 }

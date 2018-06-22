@@ -4,18 +4,22 @@ import com.javarush.task.task35.task3513.utils.ArrayOperations;
 
 import java.io.StringReader;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public class ModelManualTest {
     public static Model model = new Model();
 
     public static void main(String[] args) {
         Tile[][] tiles = generateTiles();
+        Tile[][] tiles1 = generateTiles();
+        System.out.println(Arrays.deepEquals(tiles, tiles1));
 //        printTiles(tiles);
 
         setTiles(tiles);
 
 //        System.out.println("Moving left");
         model.left();
+        System.out.println(Arrays.deepEquals(tiles, tiles1));
 //        printTiles(tiles);
         /*System.out.println("Running right()");
         model.right();
