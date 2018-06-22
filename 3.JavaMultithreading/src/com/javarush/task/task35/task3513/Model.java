@@ -205,6 +205,17 @@ public class Model {
         }
     }
 
+    public void autoMove() {
+        PriorityQueue<MoveEfficiency> priorityQueue = new PriorityQueue<>(4, Collections.reverseOrder());
+
+        priorityQueue.offer(getMoveEfficiency(this::left));
+        priorityQueue.offer(getMoveEfficiency(this::right));
+        priorityQueue.offer(getMoveEfficiency(this::up));
+        priorityQueue.offer(getMoveEfficiency(this::down));
+
+        priorityQueue.peek().getMove().move();
+    }
+
     boolean hasBoardChanged() {
         return !Arrays.deepEquals(gameTiles, previousStates.peek());
     }
