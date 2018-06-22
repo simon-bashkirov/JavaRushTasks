@@ -11,7 +11,7 @@ public class Model {
     int maxTile;
     private Stack<Tile[][]> previousStates;
     private Stack<Integer> previousScores;
-    private boolean isSaveNeeded;
+    private boolean isSaveNeeded = true;
 
     public Model() {
         resetGameTiles();
@@ -51,7 +51,6 @@ public class Model {
         }
         previousStates = new Stack<>();
         previousScores = new Stack<>();
-        isSaveNeeded = true;
     }
 
     private boolean compressTiles(Tile[] tiles) {
@@ -109,6 +108,9 @@ public class Model {
     }
 
     void left() {
+        if (isSaveNeeded)
+            saveState(gameTiles);
+
         boolean isChanged = false;
         for (Tile[] tileRow : gameTiles) {
 
@@ -117,21 +119,26 @@ public class Model {
         if(isChanged) {
             addTile();
         }
+
+        isSaveNeeded = true;
     }
 
     void right() {
+        saveState(gameTiles);
         gameTiles = ArrayOperations.flipHorizontally(gameTiles);
         left();
         gameTiles = ArrayOperations.flipHorizontally(gameTiles);
     }
 
     void up() {
+        saveState(gameTiles);
         gameTiles = ArrayOperations.rotateCounterclockwise(gameTiles);
         left();
         gameTiles = ArrayOperations.rotateClockwise(gameTiles);
     }
 
     void down() {
+        saveState(gameTiles);
         gameTiles = ArrayOperations.rotateClockwise(gameTiles);
         left();
         gameTiles = ArrayOperations.rotateCounterclockwise(gameTiles);
@@ -160,15 +167,15 @@ public class Model {
         return false;
     }
 
-    private void saveState(Tile[][] gameTiles) {
-        Tile[][] gameTilesCopy = new Tile[gameTiles.length][gameTiles.length];
-        for (int i = 0; i < gameTiles.length; i++) {
-            for (int j = 0; j < gameTiles.length; j++) {
-                gameTilesCopy[i][j] = new Tile(gameTiles[i][j]);
+    private void saveState(Tile[][] tiles) {
+        Tile[][] tilesCopy = new Tile[tiles.length][tiles.length];
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles.length; j++) {
+                tilesCopy[i][j] = new Tile(tiles[i][j]);
             }
         }
 
-        previousStates.push(gameTilesCopy);
+        previousStates.push(tilesCopy);
         previousScores.push(score);
         isSaveNeeded = false;
     }
@@ -177,6 +184,24 @@ public class Model {
         if (!previousStates.isEmpty() && !previousScores.isEmpty()) {
             gameTiles = previousStates.pop();
             score = previousScores.pop();
+        }
+    }
+
+    public void randomMove() {
+        int randomInt = (int) (Math.random() * 4);
+        switch (randomInt) {
+            case (0):
+                left();
+                break;
+            case (1):
+                right();
+                break;
+            case (2):
+                up();
+                break;
+            case (3):
+                down();
+                break;
         }
     }
 }
