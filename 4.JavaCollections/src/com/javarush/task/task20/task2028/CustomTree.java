@@ -11,24 +11,20 @@ import java.util.ListIterator;
 */
 public class CustomTree extends AbstractList<String> implements Cloneable, Serializable {
     Entry<String> root;
-    Entry<String> currentEntry;
+//    Entry<String> currentEntry;
 
     public static void main(String[] args) {
-        List<String> list = new CustomTree();
+        List<String> list = new CustomTree("0");
         for (int i = 1; i < 16; i++) {
             list.add(String.valueOf(i));
         }
-        //System.out.println("Expected 3, actual is " + ((CustomTree) list).getParent("8"));
+        System.out.println("Expected 3, actual is " + ((CustomTree) list).getParent("8"));
         list.remove("5");
-        //System.out.println("Expected null, actual is " + ((CustomTree) list).getParent("11"));
-    }
-
-    public CustomTree() {
-        this("0");
+        System.out.println("Expected null, actual is " + ((CustomTree) list).getParent("11"));
     }
 
     public CustomTree(String s) {
-        root = currentEntry = new Entry<>(s);
+        root = new Entry<>(s);
     }
 
     @Override
@@ -38,7 +34,17 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
 
     @Override
     public boolean add(String s) {
-        Entry<String> entry = new Entry<>(s);
+        Entry<String> currentEntry = root;
+        while (true) {
+            if (currentEntry.isAvailableToAddChildren()) {
+
+            }
+        }
+    }
+
+    public boolean dd() {
+        Entry<String> currentEntry = null;
+        Entry<String> entry = new Entry<>("");
         if (!currentEntry.isAvailableToAddChildren()) {
             if (currentEntry.getLeftChild().isAvailableToAddChildren())
                 currentEntry = currentEntry.getLeftChild();
@@ -59,7 +65,6 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
     }
 
     public String getParent(String s) {
-
         return null;
     }
 
@@ -116,10 +121,8 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         }
 
         void checkChildren() {
-            if (leftChild != null)
-                availableToAddLeftChildren = false;
-            if (rightChild != null)
-                availableToAddRightChildren = false;
+            availableToAddLeftChildren = (leftChild == null);
+            availableToAddRightChildren = (rightChild == null);
         }
 
         boolean isAvailableToAddChildren() {
