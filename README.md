@@ -9,6 +9,7 @@ They are mostly simple pieces of code to test particular subjects, but there are
 * [Console ZIP-archiver](https://github.com/vcvitaly/JavaRushTasks/tree/master/3.JavaMultithreading/src/com/javarush/task/task31/task3110)
 * [Simple HMTL-editor](https://github.com/vcvitaly/JavaRushTasks/tree/master/3.JavaMultithreading/src/com/javarush/task/task32/task3209)
 * [Restaurant ordering system simulator](https://github.com/vcvitaly/JavaRushTasks/tree/master/3.JavaMultithreading/src/com/javarush/task/task27/task2712)
+* [Game - 2048](https://github.com/vcvitaly/JavaRushTasks/tree/master/3.JavaMultithreading/src/com/javarush/task/task27/task2712)
 
 ### Repo owner ###
 
