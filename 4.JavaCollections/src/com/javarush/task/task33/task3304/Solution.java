@@ -1,8 +1,8 @@
 package com.javarush.task.task33.task3304;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -25,14 +25,18 @@ public class Solution {
 
         objectMapper.writeValue(stringWriter, one);
 
-        StringReader stringReader = new StringReader(stringWriter.toString());
+        String s = stringWriter.toString();
+        s = s.replaceFirst(one.getClass().getSimpleName(), resultClassObject.getSimpleName());
+
+        System.out.println(s);
+
+        StringReader stringReader = new StringReader(s);
 
         return objectMapper.readValue(stringReader, resultClassObject);
-
+//        return null;
     }
 
-//    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,  property="className")
-//    @JsonSubTypes(@JsonSubTypes.Type(value=First.class,  name="first"))
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property="type")
     public static class First {
         public int i;
         public String name;
@@ -58,8 +62,7 @@ public class Solution {
         }
     }
 
-//    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,  property="className")
-//    @JsonSubTypes(@JsonSubTypes.Type(value=Second.class, name="second"))
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property="type")
     public static class Second {
         public int i;
         public String name;

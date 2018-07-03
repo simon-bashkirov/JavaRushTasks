@@ -8,15 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../../JARS" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/../../JARS" recursive="false" />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-core:2.9.4" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-annotations:2.9.4" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.9.4" level="project" />
   </component>
 </module>
