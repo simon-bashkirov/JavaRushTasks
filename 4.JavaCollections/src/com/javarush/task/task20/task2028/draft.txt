@@ -1,0 +1,14 @@
+/* JAXB toString
+        String result = null;
+        try (StringWriter writer = new StringWriter()) {
+            JAXBContext context = JAXBContext.newInstance(CustomTree.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(this, writer);
+
+            result = writer.toString();
+        } catch (IOException | JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return result;*/

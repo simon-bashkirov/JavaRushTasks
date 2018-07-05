@@ -1,26 +1,33 @@
 package com.javarush.task.task20.task2028;
 
 import java.io.Serializable;
-import java.util.AbstractList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /* 
 Построй дерево(1)
 */
+
 public class CustomTree extends AbstractList<String> implements Cloneable, Serializable {
     Entry<String> root;
+//    Entry<String> nodeWithAvailableChildren;
 //    Entry<String> currentEntry;
 
     public static void main(String[] args) {
-        List<String> list = new CustomTree("0");
-        for (int i = 1; i < 16; i++) {
-            list.add(String.valueOf(i));
+        CustomTree tree = new CustomTree("0");
+        for (int i = 1; i <= 140; i++) {
+            tree.add(String.valueOf(i));
         }
-        System.out.println("Expected 3, actual is " + ((CustomTree) list).getParent("8"));
-        list.remove("5");
-        System.out.println("Expected null, actual is " + ((CustomTree) list).getParent("11"));
+//        System.out.println("Expected 3, actual is " + ((CustomTree) tree).getParent("8"));
+//        tree.remove("5");
+//        System.out.println("Expected null, actual is " + ((CustomTree) tree).getParent("11"));
+//        System.out.println(tree);
+//        BTreePrinter.printNode(((CustomTree) tree).getRoot());
+        System.out.println(tree.size());
+        System.out.println(tree.getParent("129"));
+    }
+
+    public CustomTree() {
+        root = new Entry<>("0");
     }
 
     public CustomTree(String s) {
@@ -29,48 +36,76 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
 
     @Override
     public int size() {
-        return 0;
+        int sizeFromRoot = size(root);
+        return sizeFromRoot > 1 ? sizeFromRoot - 1 : 0;
+    }
+
+    public int size(Entry<String> entry) {
+        if (entry == null)
+            return 0;
+        else
+            return 1 + size(entry.getLeftChild()) + size(entry.getRightChild());
     }
 
     @Override
     public boolean add(String s) {
-        Entry<String> currentEntry = root;
-        while (true) {
-            if (currentEntry.isAvailableToAddChildren()) {
-
+        Entry<String> nodeWithAvailableChildren = null;
+        Queue<Entry<String>> queue = new LinkedList<>(Arrays.asList(root));
+        while (queue.size() > 0) {
+            Entry<String> entry = queue.remove();
+            if (entry.isAvailableToAddChildren()) {
+                nodeWithAvailableChildren = entry;
+                break;
+            } else {
+                queue.add(entry.getLeftChild());
+                queue.add(entry.getRightChild());
             }
         }
+        return nodeWithAvailableChildren.addChild(new Entry<String>(s, nodeWithAvailableChildren));
     }
 
-    public boolean dd() {
-        Entry<String> currentEntry = null;
-        Entry<String> entry = new Entry<>("");
-        if (!currentEntry.isAvailableToAddChildren()) {
-            if (currentEntry.getLeftChild().isAvailableToAddChildren())
-                currentEntry = currentEntry.getLeftChild();
-            else if (currentEntry.getRightChild().isAvailableToAddChildren())
-                currentEntry = currentEntry.getRightChild();
-            else
-                throw new RuntimeException(new CustomTreeStructureException());
-        }
-        entry.setParent(currentEntry);
-        entry.setLineNumber(currentEntry.getLineNumber()+1);
-        currentEntry.addChild(entry);
-        return true;
-    }
+    /*public boolean add(String s, Entry<String> parent) {
+        if (parent.isAvailableToAddChildren())
+            parent.addChild(new Entry<>(s, parent));
+        else
+    }*/
+
+    /*public Object x(Entry<String> node) {
+        return node.isAvailableToAddChildren() ? node :
+    }*/
 
     @Override
     public boolean remove(Object o) {
         return super.remove(o);
     }
 
-    public String getParent(String s) {
-        return null;
+    public Entry<String> getRoot() {
+        return root;
     }
 
     @Override
     public String get(int index) {
         throw new UnsupportedOperationException();
+    }
+
+    public String getParent(String s) {
+        Entry<String> parent = null;
+        Queue<Entry<String>> queue = new LinkedList<>(Arrays.asList(root));
+        while (queue.size() > 0) {
+            Entry<String> entry = queue.remove();
+            if (
+                    s.equals(entry.getLeftChild().getElementName()) ||
+                    s.equals(entry.getRightChild().getElementName())
+                    )
+            {
+                return entry.getElementName();
+            } else {
+                queue.add(entry.getLeftChild());
+                queue.add(entry.getRightChild());
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -114,8 +149,17 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         boolean availableToAddLeftChildren, availableToAddRightChildren;
         Entry<T> parent, leftChild, rightChild;
 
+        public Entry(String elementName, Entry<T> parent) {
+            this.elementName = elementName;
+            this.parent = parent;
+            this.lineNumber = parent == null ? 0 : parent.lineNumber + 1;
+            availableToAddLeftChildren = true;
+            availableToAddRightChildren = true;
+        }
+
         public Entry(String elementName) {
             this.elementName = elementName;
+            this.lineNumber = 0;
             availableToAddLeftChildren = true;
             availableToAddRightChildren = true;
         }
@@ -126,6 +170,7 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         }
 
         boolean isAvailableToAddChildren() {
+            checkChildren();
             return availableToAddLeftChildren || availableToAddRightChildren;
         }
 
@@ -134,7 +179,8 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
                 leftChild = entry;
             else if (availableToAddRightChildren)
                 rightChild = entry;
-            else return false;
+            else
+                return false;
             return true;
         }
 
@@ -166,9 +212,22 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
             return 0;
         }
 
+        public String getElementName() {
+            return elementName;
+        }
+        
+        /*@Override
+        public String toString() {
+            String fourSpaces = new String(new char[lineNumber*4]).replace("\0", " ");
+            return elementName + '\n' +
+                    ", leftChild=" + leftChild + "\n" +
+                    ", rightChild=" + rightChild + "\n";
+        }*/
     }
 
-    static class CustomTreeStructureException extends Exception {
-
+    @Override
+    public String toString() {
+        return null;
     }
 }
+
