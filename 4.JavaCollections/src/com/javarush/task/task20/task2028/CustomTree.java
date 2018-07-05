@@ -9,19 +9,17 @@ import java.util.*;
 
 public class CustomTree extends AbstractList<String> implements Cloneable, Serializable {
     Entry<String> root;
-//    Entry<String> nodeWithAvailableChildren;
-//    Entry<String> currentEntry;
 
     public static void main(String[] args) {
         CustomTree tree = new CustomTree("0");
-        for (int i = 1; i <= 140; i++) {
+        for (int i = 1; i <= 5; i++) {
             tree.add(String.valueOf(i));
         }
 //        System.out.println("Expected 3, actual is " + ((CustomTree) tree).getParent("8"));
 //        tree.remove("5");
 //        System.out.println("Expected null, actual is " + ((CustomTree) tree).getParent("11"));
 //        System.out.println(tree);
-//        BTreePrinter.printNode(((CustomTree) tree).getRoot());
+        BTreePrinter.printNode(tree.getRoot());
         System.out.println(tree.size());
         System.out.println(tree.getParent("129"));
     }
@@ -64,18 +62,10 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         return nodeWithAvailableChildren.addChild(new Entry<String>(s, nodeWithAvailableChildren));
     }
 
-    /*public boolean add(String s, Entry<String> parent) {
-        if (parent.isAvailableToAddChildren())
-            parent.addChild(new Entry<>(s, parent));
-        else
-    }*/
-
-    /*public Object x(Entry<String> node) {
-        return node.isAvailableToAddChildren() ? node :
-    }*/
-
     @Override
     public boolean remove(Object o) {
+        if (o.getClass() != String.class)
+            throw new UnsupportedOperationException(o + " is not a String");
         return super.remove(o);
     }
 
@@ -94,7 +84,7 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         while (queue.size() > 0) {
             Entry<String> entry = queue.remove();
             if (
-                    s.equals(entry.getLeftChild().getElementName()) ||
+                    s.equals(entry.getElementName()) ||
                     s.equals(entry.getRightChild().getElementName())
                     )
             {
@@ -215,19 +205,6 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         public String getElementName() {
             return elementName;
         }
-        
-        /*@Override
-        public String toString() {
-            String fourSpaces = new String(new char[lineNumber*4]).replace("\0", " ");
-            return elementName + '\n' +
-                    ", leftChild=" + leftChild + "\n" +
-                    ", rightChild=" + rightChild + "\n";
-        }*/
-    }
-
-    @Override
-    public String toString() {
-        return null;
     }
 }
 
