@@ -20,8 +20,10 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
 //        System.out.println("Expected null, actual is " + ((CustomTree) tree).getParent("11"));
 //        System.out.println(tree);
         BTreePrinter.printNode(tree.getRoot());
-        System.out.println(tree.size());
-        System.out.println(tree.getParent("129"));
+        System.out.println("tree.size() = " + tree.size());
+        System.out.println("tree.getParent(\"5\") = " + tree.getParent("5"));
+        tree.remove("1");
+        BTreePrinter.printNode(tree.getRoot());
     }
 
     public CustomTree() {
@@ -66,7 +68,36 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
     public boolean remove(Object o) {
         if (o.getClass() != String.class)
             throw new UnsupportedOperationException(o + " is not a String");
-        return super.remove(o);
+
+        String s = (String) o;
+
+        Queue<Entry<String>> queue = new LinkedList<>(Arrays.asList(root));
+
+        while (queue.size() > 0) {
+            Entry<String> entry = queue.remove();
+
+            if ( s.equals(entry.getElementName()) ) {
+                if (entry == root)
+                    return false;
+
+                Entry<String> parent = entry.getParent();
+
+                if (entry.equals(parent.getLeftChild()))
+                    parent.setLeftChild(null);
+                else if (entry.equals(parent.getRightChild()))
+                    parent.setRightChild(null);
+                else throw new RuntimeException(entry.getElementName() + " has " + parent.getElementName() + "" +
+                            " as a parent, but " + parent.getElementName() + " doesn't have such child");
+                return true;
+            } else {
+                if (entry.getLeftChild() != null)
+                    queue.add(entry.getLeftChild());
+                if (entry.getRightChild() != null)
+                    queue.add(entry.getRightChild());
+            }
+        }
+
+        return false;
     }
 
     public Entry<String> getRoot() {
@@ -79,16 +110,16 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
     }
 
     public String getParent(String s) {
-        Entry<String> parent = null;
         Queue<Entry<String>> queue = new LinkedList<>(Arrays.asList(root));
+
         while (queue.size() > 0) {
             Entry<String> entry = queue.remove();
-            if (
-                    s.equals(entry.getElementName()) ||
-                    s.equals(entry.getRightChild().getElementName())
-                    )
-            {
-                return entry.getElementName();
+            //TODO is that a correct way to work with null?
+            if (entry == null)
+                continue;
+            if ( s.equals(entry.getElementName()) ) {
+                Entry<String> parent = entry.getParent();
+                return parent != null ? parent.getElementName() : null;
             } else {
                 queue.add(entry.getLeftChild());
                 queue.add(entry.getRightChild());
@@ -165,10 +196,14 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         }
 
         boolean addChild(Entry<T> entry) {
-            if (availableToAddLeftChildren)
+            if (availableToAddLeftChildren) {
                 leftChild = entry;
-            else if (availableToAddRightChildren)
+                availableToAddLeftChildren = false;
+            }
+            else if (availableToAddRightChildren) {
                 rightChild = entry;
+                availableToAddRightChildren = false;
+            }
             else
                 return false;
             return true;
@@ -198,12 +233,48 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
             return rightChild;
         }
 
+        public void setLeftChild(Entry<T> leftChild) {
+            this.leftChild = leftChild;
+        }
+
+        public void setRightChild(Entry<T> rightChild) {
+            this.rightChild = rightChild;
+        }
+
         int getCountOfChildren() {
             return 0;
         }
 
         public String getElementName() {
             return elementName;
+        }
+
+        @Override
+        public String toString() {
+            return "Entry{" +
+                    "elementName='" + elementName + '\'' +
+                    ", leftChild=" + leftChild +
+                    ", rightChild=" + rightChild +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Entry<?> entry = (Entry<?>) o;
+            return lineNumber == entry.lineNumber &&
+                    availableToAddLeftChildren == entry.availableToAddLeftChildren &&
+                    availableToAddRightChildren == entry.availableToAddRightChildren &&
+                    Objects.equals(elementName, entry.elementName) &&
+                    Objects.equals(parent, entry.parent) &&
+                    Objects.equals(leftChild, entry.leftChild) &&
+                    Objects.equals(rightChild, entry.rightChild);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(elementName, lineNumber, availableToAddLeftChildren, availableToAddRightChildren, parent, leftChild, rightChild);
         }
     }
 }
