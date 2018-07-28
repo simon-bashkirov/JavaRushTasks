@@ -1,6 +1,6 @@
 package com.javarush.task.task27.task2707;
 
-/*
+/* 
 Определяем порядок захвата монитора
 */
 public class Solution {
@@ -13,42 +13,42 @@ public class Solution {
     }
 
     public static boolean isNormalLockOrder(final Solution solution, final Object o1, final Object o2) throws Exception {
-        final boolean[] b = {false};
+        final Boolean[] flag = {null};
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                solution.someMethodWithSynchronizedBlocks(o1,o2);
-                b[0] = true;
-            }
-        });
-        t1.setDaemon(true);
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (o1) {
-                    while (!Thread.currentThread().isInterrupted()) {
-                        try {
-                            Thread.sleep(1);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
+                Thread t2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        solution.someMethodWithSynchronizedBlocks(o1, o2);
+//                        System.out.println("t2 done");
                     }
+                });
+                t2.setDaemon(true);
+                t2.start();
+                synchronized (o2) {
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                synchronized (o1) {
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    flag[0] = !t2.isAlive();
                 }
             }
         });
-        t2.setDaemon(true);
-
-        synchronized (o1) {
-            t1.start();
-            t2.start();
+        t1.setDaemon(true);
+        t1.start();
+        while (flag[0] == null) {
             Thread.sleep(1);
         }
-        synchronized (o1) {
-
-        }
-
-
-        return t1.isAlive();
+        return flag[0];
     }
 
     public static void main(String[] args) throws Exception {
