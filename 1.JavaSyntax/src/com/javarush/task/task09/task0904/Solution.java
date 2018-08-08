@@ -4,9 +4,11 @@ package com.javarush.task.task09.task0904;
 Стек-трейс длиной 10 вызовов
 */
 
+import java.util.Arrays;
+
 public class Solution {
     public static void main(String[] args) throws Exception {
-        method1();
+        Arrays.stream(method1()).forEach(System.out::println);
     }
 
     public static StackTraceElement[] method1() {
