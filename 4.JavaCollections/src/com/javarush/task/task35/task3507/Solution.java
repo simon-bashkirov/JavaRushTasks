@@ -47,7 +47,7 @@ public class Solution {
                     try {
                         Animal a = (Animal) aClass.getConstructor((Class<?>[]) null).newInstance();
                         animals.add(a);
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
                     }
                 }
             }
@@ -55,8 +55,6 @@ public class Solution {
             e.printStackTrace();
         }
 
-        Set<? extends Animal> animals1 = animals;
-
-        return animals1;
+        return animals;
     }
 }
