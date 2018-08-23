@@ -1,5 +1,10 @@
 package com.javarush.task.task22.task2213;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Класс Field описывает "поле клеток" игры Тетрис
  */
@@ -15,6 +20,10 @@ public class Field {
         this.width = width;
         this.height = height;
         matrix = new int[height][width];
+    }
+
+    public static void main(String[] args) {
+        Field field = new Field(12, 8);
     }
 
     public int getWidth() {
@@ -108,5 +117,20 @@ public class Field {
         //Копируем все непустые линии в список.
         //Добавляем недостающие строки в начало списка.
         //Преобразуем список обратно в матрицу
+
+        List<int[]> lines = new LinkedList<>();
+
+        for (int[] line : matrix) {
+            boolean isFull = Arrays.stream(line).noneMatch(i -> i == 0);
+            if (!isFull) {
+                lines.add(line);
+            } else {
+                lines.add(0, new int[width]);
+            }
+        }
+
+        int[][] tempMatrix = new int[height][width];
+        lines.toArray(tempMatrix);
+        matrix = tempMatrix;
     }
 }
