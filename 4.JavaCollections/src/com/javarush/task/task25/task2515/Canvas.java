@@ -26,7 +26,7 @@ public class Canvas {
     public void setPoint(double x, double y, char c) {
         int intX = (int) Math.round(x);
         int intY = (int) Math.round(y);
-        boolean outsideBorders = intX < 0 || intY < 0 || intY > matrix.length || intX > matrix[0].length;
+        boolean outsideBorders = intX < 0 || intY < 0 || intY >= matrix.length || intX >= matrix[0].length;
         if (!outsideBorders) {
             matrix[intY][intX] = c;
         }
@@ -41,5 +41,24 @@ public class Canvas {
                 }
             }
         }
+    }
+
+    public void clear() {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[i][j] = ' ';
+            }
+        }
+    }
+
+    public void print() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                sb.append(matrix[i][j]);
+            }
+            sb.append(System.lineSeparator());
+        }
+        System.out.println(sb.toString());
     }
 }
