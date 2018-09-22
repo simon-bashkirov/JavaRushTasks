@@ -32,7 +32,7 @@ class FieldTest {
 
         printMatrix(matrix);
 
-        field.setMatrix(matrix);
+//        field.setMatrix(matrix);
         field.removeFullLines();
         System.out.println();
         printMatrix(field.getMatrix());
