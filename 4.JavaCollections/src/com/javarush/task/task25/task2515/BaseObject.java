@@ -46,6 +46,7 @@ public abstract class BaseObject {
     /**
      * Метод рисует свой объект на "канвасе".
      */
+    // TODO make abstract?
     public void draw(Canvas canvas) {
         //do nothing
     }
@@ -53,6 +54,7 @@ public abstract class BaseObject {
     /**
      * Двигаем себя на один ход.
      */
+    // TODO make abstract?
     public void move() {
         //do nothing
     }
