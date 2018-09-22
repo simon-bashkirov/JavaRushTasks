@@ -1,8 +1,13 @@
 package com.javarush.task.task25.task2515;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Главный класс игры - Космос (Space)
@@ -105,7 +110,9 @@ public class Space {
      * Создаем новый НЛО. 1 раз на 10 вызовов.
      */
     public void createUfo() {
-        //тут нужно создать новый НЛО.
+        if (ufos.isEmpty()) {
+            ufos.add(new Ufo(10, 2));
+        }
         //1 раз за 10 вызовов метода.
     }
 
@@ -115,7 +122,16 @@ public class Space {
      * б) падение ниже края игрового поля (бомба умирает)
      */
     public void checkBombs() {
-        //тут нужно проверить все возможные столкновения для каждой бомбы.
+        for (Bomb bomb : bombs) {
+            if (bomb.getY() > height) {
+                bomb.die();
+            }
+            if (bomb.isIntersect(ship)) {
+                bomb.die();
+                ship.die();
+            }
+
+        }
     }
 
     /**
@@ -124,15 +140,27 @@ public class Space {
      * б) вылет выше края игрового поля (ракета умирает)
      */
     public void checkRockets() {
-        //тут нужно проверить все возможные столкновения для каждой ракеты.
+        for (Rocket rocket : rockets) {
+            if (rocket.getY() < 0) {
+                rocket.die();
+            }
+            for (Ufo ufo : ufos) {
+                if (rocket.isIntersect(ufo)) {
+                    rocket.die();
+                    ufo.die();
+                }
+            }
+        }
     }
 
     /**
      * Удаляем умерсшие объекты (бомбы, ракеты, НЛО) из списков
      */
     public void removeDead() {
-        //тут нужно удалить все умершие объекты из списков.
-        //Кроме космического корабля - по нему определяем ищет еще игра или нет.
+        Predicate<? super BaseObject> isDead = baseObject -> !baseObject.isAlive();
+        ufos.removeIf(isDead);
+        rockets.removeIf(isDead);
+        bombs.removeIf(isDead);
     }
 
     /**
