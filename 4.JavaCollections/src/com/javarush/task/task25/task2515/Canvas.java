@@ -22,4 +22,24 @@ public class Canvas {
     public char[][] getMatrix() {
         return matrix;
     }
+
+    public void setPoint(double x, double y, char c) {
+        int intX = (int) Math.round(x);
+        int intY = (int) Math.round(y);
+        boolean outsideBorders = intX < 0 || intY < 0 || intY > matrix.length || intX > matrix[0].length;
+        if (!outsideBorders) {
+            matrix[intY][intX] = c;
+        }
+
+    }
+
+    public void drawMatrix(double x, double y, int[][] matrix, char c) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] != 0) {
+                    setPoint(x + j, y + i, c);
+                }
+            }
+        }
+    }
 }
