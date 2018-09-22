@@ -60,6 +60,7 @@ public abstract class BaseObject {
     /**
      * Проверяем - не выходит ли (x,y) за границы.
      */
+    // TODO add radius to formulas
     public void checkBorders(double minx, double maxx, double miny, double maxy) {
         if (x < minx) x = minx;
         if (x > maxx) x = maxx;
