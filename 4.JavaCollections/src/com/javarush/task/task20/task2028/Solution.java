@@ -13,7 +13,7 @@ public class Solution {
 //        System.out.println("List size is " + list.size());
 //        System.out.println("Expected parent of 8 is 3, actual parent is " + ((CustomTree) list).getParent("8"));
 //        System.out.println("Expected parent of 20 is null, actual parent is " + ((CustomTree) list).getParent("20"));
-        BTreePrinter.printNode(new NodeAdapter(
+        BTreePrinter.printNode(new CustomNodeAdapter(
                 ((CustomTree) list).getRoot()
         ));
 

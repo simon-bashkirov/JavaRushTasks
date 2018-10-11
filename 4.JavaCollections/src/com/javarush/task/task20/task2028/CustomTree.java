@@ -19,11 +19,11 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
 //        tree.remove("5");
 //        System.out.println("Expected null, actual is " + ((CustomTree) tree).getParent("11"));
 //        System.out.println(tree);
-        BTreePrinter.printNode(new NodeAdapter(tree.getRoot()));
+        BTreePrinter.printNode(new CustomNodeAdapter(tree.getRoot()));
         System.out.println("tree.size() = " + tree.size());
         System.out.println("tree.getParent(\"5\") = " + tree.getParent("5"));
         tree.remove("1");
-        BTreePrinter.printNode(new NodeAdapter(tree.getRoot()));
+        BTreePrinter.printNode(new CustomNodeAdapter(tree.getRoot()));
     }
 
     public CustomTree() {

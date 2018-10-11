@@ -30,8 +30,7 @@ public class RedBlackTree {
 
     public void insert(int item) {
         current = grand = parent = header;
-//        EMPTY.element = item;
-        while (current.element != item) {
+        while (current.element != 0) {
             great = grand;
             grand = parent;
             parent = current;
@@ -123,5 +122,25 @@ public class RedBlackTree {
             this.element = element;
             this.color = Color.BLACK;
         }
+
+        public int getElement() {
+            return element;
+        }
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+    }
+
+    public Node getHeader() {
+        return header;
     }
 }
