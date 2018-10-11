@@ -21,16 +21,16 @@ public class RedBlackTree {
     }
 
     public boolean isEmpty() {
-        return header.left == EMPTY;
+        return header == EMPTY;
     }
 
     public void clear() {
-        header.right = EMPTY;
+        header = EMPTY;
     }
 
     public void insert(int item) {
         current = grand = parent = header;
-        EMPTY.element = item;
+//        EMPTY.element = item;
         while (current.element != item) {
             great = grand;
             grand = parent;
@@ -96,10 +96,10 @@ public class RedBlackTree {
     }
 
     private Node rotateWithRightNode(Node element) {
-        Node left = element.left;
-        element.left = left.right;
-        left.right = element;
-        return left;
+        Node right = element.right;
+        element.right = right.left;
+        right.left = element;
+        return right;
     }
 
     public static enum Color {
