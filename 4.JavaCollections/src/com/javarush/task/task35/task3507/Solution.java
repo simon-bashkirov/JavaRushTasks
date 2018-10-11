@@ -1,5 +1,9 @@
 package com.javarush.task.task35.task3507;
 
+
+
+import com.javarush.task.task35.task3507.data.Cat;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
