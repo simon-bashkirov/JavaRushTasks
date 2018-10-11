@@ -6,16 +6,18 @@ public class Solution {
     public static void main(String[] args) {
         List<String> list = new CustomTree();
 
-        for (int i = 1; i < 16; i++) {
+        for (int i = 1; i < 5; i++) {
             list.add(String.valueOf(i));
         }
 
-        System.out.println("List size is " + list.size());
-        System.out.println("Expected parent of 8 is 3, actual parent is " + ((CustomTree) list).getParent("8"));
-        System.out.println("Expected parent of 20 is null, actual parent is " + ((CustomTree) list).getParent("20"));
-        BTreePrinter.printNode(((CustomTree) list).getRoot());
+//        System.out.println("List size is " + list.size());
+//        System.out.println("Expected parent of 8 is 3, actual parent is " + ((CustomTree) list).getParent("8"));
+//        System.out.println("Expected parent of 20 is null, actual parent is " + ((CustomTree) list).getParent("20"));
+        BTreePrinter.printNode(new NodeAdapter(
+                ((CustomTree) list).getRoot()
+        ));
 
-        list.remove("3");
+        /*list.remove("3");
         System.out.println("Expected parent of 8 is null, actual parent is " + ((CustomTree) list).getParent("8"));
         BTreePrinter.printNode(((CustomTree) list).getRoot());
 
@@ -31,6 +33,6 @@ public class Solution {
         BTreePrinter.printNode(((CustomTree) list).getRoot());
         System.out.println("Add 20, Expected true, actual " + list.add("20"));
         BTreePrinter.printNode(((CustomTree) list).getRoot());
-        System.out.println("Expected parent of 20 is 1, actual parent is " + ((CustomTree) list).getParent("20"));
+        System.out.println("Expected parent of 20 is 1, actual parent is " + ((CustomTree) list).getParent("20"));*/
     }
 }

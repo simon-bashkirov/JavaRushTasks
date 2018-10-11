@@ -6,13 +6,13 @@ import java.util.List;
 
 public class BTreePrinter {
 
-    public static <T extends Comparable<?>> void printNode(CustomTree.Entry<T> root) {
+    public static <T extends Comparable<?>> void printNode(NodeAdapter root) {
         int maxLevel = BTreePrinter.maxLevel(root);
 
         printNodeInternal(Collections.singletonList(root), 1, maxLevel);
     }
 
-    private static <T extends Comparable<?>> void printNodeInternal(List<CustomTree.Entry<T>> nodes, int level, int maxLevel) {
+    private static <T extends Comparable<?>> void printNodeInternal(List<NodeAdapter> nodes, int level, int maxLevel) {
         if (nodes.isEmpty() || BTreePrinter.isAllElementsNull(nodes))
             return;
 
@@ -23,12 +23,12 @@ public class BTreePrinter {
 
         BTreePrinter.printWhitespaces(firstSpaces);
 
-        List<CustomTree.Entry<T>> newNodes = new ArrayList<CustomTree.Entry<T>>();
-        for (CustomTree.Entry<T> node : nodes) {
+        List<NodeAdapter> newNodes = new ArrayList<>();
+        for (NodeAdapter node : nodes) {
             if (node != null) {
-                System.out.print(node.getElementName());
-                newNodes.add(node.getLeftChild());
-                newNodes.add(node.getRightChild());
+                System.out.print(node.getValue());
+                newNodes.add(node.getLeft());
+                newNodes.add(node.getRight());
             } else {
                 newNodes.add(null);
                 newNodes.add(null);
@@ -47,14 +47,14 @@ public class BTreePrinter {
                     continue;
                 }
 
-                if (nodes.get(j).getLeftChild() != null)
+                if (nodes.get(j).getLeft() != null)
                     System.out.print("/");
                 else
                     BTreePrinter.printWhitespaces(1);
 
                 BTreePrinter.printWhitespaces(i + i - 1);
 
-                if (nodes.get(j).getRightChild() != null)
+                if (nodes.get(j).getRight() != null)
                     System.out.print("\\");
                 else
                     BTreePrinter.printWhitespaces(1);
@@ -73,11 +73,11 @@ public class BTreePrinter {
             System.out.print(" ");
     }
 
-    private static <T extends Comparable<?>> int maxLevel(CustomTree.Entry<T> node) {
+    private static <T extends Comparable<?>> int maxLevel(NodeAdapter node) {
         if (node == null)
             return 0;
 
-        return Math.max(BTreePrinter.maxLevel(node.getLeftChild()), BTreePrinter.maxLevel(node.getRightChild())) + 1;
+        return Math.max(BTreePrinter.maxLevel(node.getLeft()), BTreePrinter.maxLevel(node.getRight())) + 1;
     }
 
     private static <T> boolean isAllElementsNull(List<T> list) {
