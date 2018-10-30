@@ -6,9 +6,9 @@ import java.util.concurrent.ForkJoinPool;
 Fork/Join
 */
 public class Solution {
-    private String binaryRepresentationMethod(int x) {
-        int a = x % 2;
-        int b = x / 2;
+    private String binaryRepresentationMethod(long x) {
+        long a = x % 2;
+        long b = x / 2;
         String result = String.valueOf(a);
         if (b > 0) {
             return binaryRepresentationMethod(b) + result;

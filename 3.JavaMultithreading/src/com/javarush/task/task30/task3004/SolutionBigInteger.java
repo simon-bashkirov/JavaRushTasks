@@ -19,7 +19,8 @@ public class SolutionBigInteger {
     public static void main(String[] args) {
         long time_before = System.currentTimeMillis();
         SolutionBigInteger solution = new SolutionBigInteger();
-        String result1 = solution.binaryRepresentationMethod(new BigInteger("123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789"));
+        String result1 = solution.binaryRepresentationMethod(new BigInteger("123456789123456789123456789123456789123456789" +
+                "123456789126789123456789123456789123912345678912345678912456789123456789123456789"));
         System.out.println(result1);
 
         /*System.out.println();
