@@ -30,3 +30,5 @@ JavaRushPlugin.properties*
 /.idea/sonarlint/
 /lib/
 /.idea/libraries/
+/.idea/misc.xml
+*.iml
