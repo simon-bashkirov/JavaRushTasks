@@ -21,28 +21,21 @@ public class RedBlackTree {
     }
 
     public boolean isEmpty() {
-        return header == EMPTY;
+        return header.left == EMPTY && header.right == EMPTY;
     }
 
     public void clear() {
-        header = EMPTY;
+        header.left = EMPTY;
+        header.right = EMPTY;
     }
 
     public void insert(int item) {
         current = grand = parent = header;
-        while (current.element != 0) {
+        while (current.element != item && current != EMPTY) {
             great = grand;
             grand = parent;
             parent = current;
             current = item > current.element ? current.right : current.left;
-
-            if (current.left.color == Color.RED && current.right.color == Color.BLACK) {
-                reorient(item);
-            }
-        }
-
-        if (current != EMPTY) {
-            return;
         }
 
         current = new Node(item, EMPTY, EMPTY);
@@ -122,25 +115,5 @@ public class RedBlackTree {
             this.element = element;
             this.color = Color.BLACK;
         }
-
-        public int getElement() {
-            return element;
-        }
-
-        public Node getLeft() {
-            return left;
-        }
-
-        public Node getRight() {
-            return right;
-        }
-
-        public Color getColor() {
-            return color;
-        }
-    }
-
-    public Node getHeader() {
-        return header;
     }
 }
