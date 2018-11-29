@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class Solution {
 
     public static void main(String[] args) {
-        testStrategy(new HashMapStorageStrategy(), 10_000);
+        testStrategy(new HashMapStorageStrategy(), 10_0);
     }
 
     public static Set<Long> getIds(Shortener shortener, Set<String> strings) {
