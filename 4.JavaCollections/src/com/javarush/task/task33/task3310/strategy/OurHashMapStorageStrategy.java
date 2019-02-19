@@ -3,8 +3,8 @@ package com.javarush.task.task33.task3310.strategy;
 import java.util.Arrays;
 
 public class OurHashMapStorageStrategy implements StorageStrategy {
-    static final int DEFAULT_INITIAL_CAPACITY = 16;
-    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
     Entry[] table = new Entry[DEFAULT_INITIAL_CAPACITY];
     int size;
     int threshold = (int) (DEFAULT_INITIAL_CAPACITY * DEFAULT_LOAD_FACTOR);
