@@ -17,5 +17,6 @@
     <orderEntry type="library" name="org.junit.jupiter:junit-jupiter-engine:5.3.0" level="application" />
     <orderEntry type="library" name="pl.pragmatists:JUnitParams:1.1.1" level="application" />
     <orderEntry type="library" name="org.junit.jupiter:junit-jupiter-params:5.3.0" level="application" />
+    <orderEntry type="library" name="org.powermock:powermock-core:2.0.0" level="application" />
   </component>
 </module>
