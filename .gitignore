@@ -32,3 +32,4 @@ JavaRushPlugin.properties*
 /.idea/libraries/
 /.idea/misc.xml
 *.iml
+out.log*

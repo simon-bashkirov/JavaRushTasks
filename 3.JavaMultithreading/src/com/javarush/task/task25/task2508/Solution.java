@@ -18,7 +18,6 @@ public class Solution
     public static void main(String[] args) throws InterruptedException {
         CustomThreadManipulator manipulator = new TaskManipulator();
 
-
         manipulator.start("first");
         Thread.sleep(150);
         manipulator.stop();
@@ -37,19 +36,5 @@ public class Solution
         manipulator.start("fifth");
         Thread.sleep(1);
         manipulator.stop();
-    }
-
-    public static class A implements Runnable {
-        public int counter;
-        @Override
-        public void run() {
-            while (counter<50) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                }
-                counter++;
-            }
-        }
     }
 }
