@@ -1,8 +1,12 @@
 package com.javarush.task.task28.task2810;
 
 import com.javarush.task.task28.task2810.model.Provider;
+import com.javarush.task.task28.task2810.vo.Vacancy;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -20,5 +24,14 @@ public class Controller {
         return "Controller{" +
                 "providers=" + Arrays.toString(providers) +
                 '}';
+    }
+
+    public void scan() {
+        List<Vacancy> vacancies = Arrays.stream(providers)
+                .map(provider -> provider.getJavaVacancies(null))
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+        System.out.println(vacancies.size());
     }
 }
