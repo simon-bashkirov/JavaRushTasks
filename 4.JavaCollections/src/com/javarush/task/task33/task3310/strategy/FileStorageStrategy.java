@@ -6,7 +6,7 @@ public class FileStorageStrategy implements StorageStrategy {
     private FileBucket[] table;
     private long bucketSizeLimit = DEFAULT_BUCKET_SIZE_LIMIT;
     private int size;
-    long maxBucketSize
+    private long maxBucketSize;
 
     @Override
     public boolean containsKey(Long key) {
