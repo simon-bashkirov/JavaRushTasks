@@ -1,7 +1,6 @@
 package com.javarush.task.task26.task2613;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CurrencyManipulator {
     private String currencyCode;
@@ -27,5 +26,36 @@ public class CurrencyManipulator {
 
     public boolean hasMoney() {
         return !denominations.isEmpty();
+    }
+
+    public boolean isAmountAvailable(int expectedAmount) {
+        return getTotalAmount() >= expectedAmount;
+    }
+
+    public Map<Integer, Integer> withdrawAmount(int expectedAmount) {
+        Map<Integer, Integer> withdrawal = new HashMap<>();
+
+        List<Integer> denominationsList = new LinkedList<>(denominations.keySet());
+        denominationsList.sort(Collections.reverseOrder());
+        while (expectedAmount > 0 && !denominationsList.isEmpty()) {
+            int nextBiggestFaceValue = denominationsList.get(0);
+            if (nextBiggestFaceValue < expectedAmount) {
+                int expectedAmountOfBills = expectedAmount / nextBiggestFaceValue;
+                Integer actualAmountOfBills = denominations.get(nextBiggestFaceValue);
+                if (expectedAmountOfBills < actualAmountOfBills) {
+                    denominations.put(nextBiggestFaceValue, actualAmountOfBills - expectedAmountOfBills);
+                    withdrawal.put(nextBiggestFaceValue, expectedAmountOfBills);
+                    expectedAmount -= nextBiggestFaceValue * expectedAmountOfBills;
+                } else {
+                    denominations.remove(nextBiggestFaceValue);
+                    withdrawal.put(nextBiggestFaceValue, actualAmountOfBills);
+                    expectedAmount -= nextBiggestFaceValue * actualAmountOfBills;
+                }
+            } else {
+                denominationsList.remove(0);
+            }
+        }
+
+        return withdrawal;
     }
 }
